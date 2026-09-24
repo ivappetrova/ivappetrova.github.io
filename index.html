@@ -222,34 +222,43 @@
       gap:48px;
     }
     .about-grid p{ color:var(--text-dim); margin-bottom:16px; max-width:56ch; }
-    .skills dl{
-      display:grid;
-      grid-template-columns:auto 1fr;
-      gap:18px 40px;
-      font-size:0.9rem;
-      align-items:start;
+
+    /* SKILLS / TECHNICAL PROFILE */
+    .skills{
+      position:relative;
+      padding-left:48px;
     }
-    .skills dt{ color:var(--text-dim); }
-    .lang-list{
-      list-style:none;
-      display:grid;
-      gap:12px;
-      max-width:340px;
-    }
-    .lang-list li{
-      display:grid;
-      grid-template-columns:5rem 1fr;
-      align-items:center;
-      gap:24px;
-    }
-    .level{ display:flex; gap:5px; }
-    .level i{
-      width:30px;
-      height:6px;
+    .skills::before{
+      content:"";
+      position:absolute;
+      left:0;
+      top:0;
+      bottom:0;
+      width:6px;
       border-radius:3px;
-      background:var(--line);
+      background:#3a3d45;
     }
-    .level i.on{ background:var(--accent); }
+    .skills-title{
+      font-size:1.1rem;
+      text-transform:uppercase;
+      letter-spacing:0;
+      margin-bottom:32px;
+    }
+    .skill-group{ margin-bottom:28px; }
+    .skill-group:last-child{ margin-bottom:0; }
+    .skill-group h4{
+      font-family:'Space Grotesk', sans-serif;
+      font-weight:700;
+      font-size:1.1rem;
+      margin-bottom:6px;
+    }
+    .skill-group p{
+      color:var(--text);
+      font-size:1.05rem;
+      line-height:1.7;
+      margin-bottom:0;
+      max-width:none;
+    }
 
     /* CONTACT */
     footer.section{
@@ -501,27 +510,28 @@
         <p>That led me to Howest DAE, where I’m specializing in Game Development and turning that passion into a career. I’m particularly interested in gameplay AI programming, while also exploring engine development and the systems that make games work behind the scenes.</p>
       </div>
       <div class="skills">
-        <dl>
-          <dt>Engines</dt>
-          <dd>Unity, Unreal Engine 5</dd>
+        <h3 class="skills-title">Technical Profile</h3>
 
-          <dt>Languages</dt>
-          <dd>
-            <ul class="lang-list">
-              <li><span>C++</span><span class="level" title="Advanced"><i class="on"></i><i class="on"></i><i class="on"></i></span></li>
-              <li><span>C#</span><span class="level" title="Advanced"><i class="on"></i><i class="on"></i><i class="on"></i></span></li>
-              <li><span>Python</span><span class="level" title="Intermediate"><i class="on"></i><i class="on"></i><i></i></span></li>
-              <li><span>Lua</span><span class="level" title="Familiar"><i class="on"></i><i></i><i></i></span></li>
-              <li><span>SQL</span><span class="level" title="Familiar"><i class="on"></i><i></i><i></i></span></li>
-              <li><span>Regex</span><span class="level" title="Familiar"><i class="on"></i><i></i><i></i></span></li>
-            </ul>
-          </dd>
+        <div class="skill-group">
+          <h4>Engines</h4>
+          <p>Unity · Unreal Engine 5</p>
+        </div>
 
-          <dt>Focus</dt>
-          <dd>Gameplay systems, AI</dd>
-          <dt>Currently</dt>
-          <dd>Developing an original game concept</dd>
-        </dl>
+        <div class="skill-group">
+          <h4>Programming</h4>
+          <p>C++ · C# · Python</p>
+          <p>Lua · SQL</p>
+        </div>
+
+        <div class="skill-group">
+          <h4>Specialization</h4>
+          <p>Gameplay Systems · Game AI</p>
+        </div>
+
+        <div class="skill-group">
+          <h4>Currently exploring</h4>
+          <p>Original game concept · UE5</p>
+        </div>
       </div>
     </div>
   </div>
@@ -530,7 +540,7 @@
 <footer class="section" id="contact">
   <div class="wrap">
     <h2>Looking for an intern?</h2>
-    <p style="color:var(--text-dim); max-width:48ch;">Open to gameplay programming roles.</p>
+    <p style="color:var(--text-dim); max-width:48ch;">Let's build your ideas together!</p>
     <div class="contact-links">
       <a href="mailto:ivaxppetrova@gmail.com"><img class="contact-icon" src="Images/Gmail.png" alt="">ivaxppetrova@gmail.com</a>
       <a href="https://github.com/ivappetrova"><img class="contact-icon" src="Images/GitHub.png" alt="">GitHub</a>
