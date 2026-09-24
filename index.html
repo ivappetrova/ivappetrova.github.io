@@ -224,6 +224,11 @@
     .about-grid p{ color:var(--text-dim); margin-bottom:16px; max-width:56ch; }
 
     /* SKILLS / TECHNICAL PROFILE */
+    .skills-col{
+      display:flex;
+      flex-direction:column;
+      gap:40px;
+    }
     .skills{
       position:relative;
       padding-left:48px;
@@ -341,11 +346,7 @@
             <span class="num">03</span>
             <span class="label">engines survived</span>
           </div>
-
-          <div>
-            <span class="num">∞</span>
-            <span class="label">things I've debugged at 2am</span>
-          </div>
+          
         </div>
       </div>
     </div>
@@ -509,28 +510,36 @@
         <p>I’ve always been drawn to games, from streaming the ones I love to bringing their characters to life through cosplay. Eventually, that curiosity shifted from wanting to experience games to wanting to understand how they’re made, and especially how the characters inside them come alive.</p>
         <p>That led me to Howest DAE, where I’m specializing in Game Development and turning that passion into a career. I’m particularly interested in gameplay AI programming, while also exploring engine development and the systems that make games work behind the scenes.</p>
       </div>
-      <div class="skills">
-        <h3 class="skills-title">Technical Profile</h3>
+      <div class="skills-col">
+        <div class="skills">
+          <h3 class="skills-title">Technical Profile</h3>
 
-        <div class="skill-group">
-          <h4>Engines</h4>
-          <p>Unity · Unreal Engine 5</p>
+          <div class="skill-group">
+            <h4>Engines</h4>
+            <p>Unity · Unreal Engine 5</p>
+          </div>
+
+          <div class="skill-group">
+            <h4>Specialization</h4>
+            <p>Gameplay Systems · Game AI</p>
+          </div>
+
+          <div class="skill-group">
+            <h4>Currently exploring</h4>
+            <p>Original game concept </p>
+          </div>
         </div>
 
-        <div class="skill-group">
-          <h4>Programming</h4>
-          <p>C++ · C# · Python</p>
-          <p>Lua · SQL</p>
-        </div>
+        <div class="skills">
+          <div class="skill-group">
+            <h4>Core Languages</h4>
+            <p>C++ · C#</p>
+          </div>
 
-        <div class="skill-group">
-          <h4>Specialization</h4>
-          <p>Gameplay Systems · Game AI</p>
-        </div>
-
-        <div class="skill-group">
-          <h4>Currently exploring</h4>
-          <p>Original game concept · UE5</p>
+          <div class="skill-group">
+            <h4>Additional Languages</h4>
+            <p>Python · Lua · SQL</p>
+          </div>
         </div>
       </div>
     </div>
@@ -540,7 +549,7 @@
 <footer class="section" id="contact">
   <div class="wrap">
     <h2>Looking for an intern?</h2>
-    <p style="color:var(--text-dim); max-width:48ch;">Let's build your ideas together!</p>
+    <p style="color:var(--text-dim); max-width:48ch;">Let's build your idea together!</p>
     <div class="contact-links">
       <a href="mailto:ivaxppetrova@gmail.com"><img class="contact-icon" src="Images/Gmail.png" alt="">ivaxppetrova@gmail.com</a>
       <a href="https://github.com/ivappetrova"><img class="contact-icon" src="Images/GitHub.png" alt="">GitHub</a>
