@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Iva Petrova- Game Dev</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500&display=swap');
+
+    :root {
+      --bg: #14161a;
+      --bg-card: #201c25;
+      --text: #eceae4;
+      --text-dim: #8b8f98;
+      --accent: #9d86d0;
+      --line: #2b2f37;
+    }
+
+    *{ box-sizing:border-box; margin:0; padding:0; }
+
+    html{ scroll-behavior:smooth; }
+
+    body{
+      background:var(--bg);
+      color:var(--text);
+      font-family:'Inter', sans-serif;
+      line-height:1.5;
+      -webkit-font-smoothing:antialiased;
+    }
+
+    h1,h2,h3{
+      font-family:'Space Grotesk', sans-serif;
+      font-weight:700;
+      letter-spacing:-0.01em;
+    }
+
+    .mono{
+      font-family:'IBM Plex Mono', monospace;
+      font-size:0.8rem;
+    }
+
+    a{ color:inherit; }
+
+    .wrap{
+      max-width:none;
+      margin:0 auto;
+      padding:0 clamp(24px, 6vw, 120px);
+    }
+
+    /* NAV */
+    nav{
+      position:sticky;
+      top:0;
+      background: rgb(18 9 53 / 0.9);
+      backdrop-filter:blur(6px);
+      border-bottom:3px solid var(--line);
+      z-index:10;
+    }
+    nav .wrap{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      height:64px;
+    }
+    .nav-name{ font-family:'Space Grotesk', sans-serif; font-weight:700; font-size:1rem; }
+    .nav-links{ display:flex; gap:28px; }
+    .nav-links a{
+      text-decoration:none;
+      color:var(--text-dim);
+      font-size:0.9rem;
+      transition:color .15s;
+    }
+    .nav-links a:hover{ color:var(--text); }
+
+    /* HERO */
+    header.hero{
+      padding:48px 0 80px;
+      border-bottom:1px solid var(--line);
+    }
+    .hero-grid{
+      display:flex;
+      align-items:stretch;
+      gap:clamp(28px, 5vw, 90px);
+    }
+    .hero-pic{
+      flex:0 0 auto;
+      width:clamp(200px, 24vw, 440px);
+      aspect-ratio:4/5;
+      object-fit:cover;
+      object-position:center 30%;
+      display:block;
+    }
+    .hero-text{
+      flex:1;
+      min-width:0;
+      display:flex;
+      flex-direction:column;
+      justify-content:flex-start;
+      gap:0;
+    }
+    .hero-name{
+      font-family:'Space Grotesk', sans-serif;
+      font-weight:700;
+      font-size:clamp(1.5rem, 2.6vw, 2.1rem);
+      margin-bottom:4px;
+    }
+    .hero-tag{
+      color:var(--accent);
+      margin-bottom:32px;
+      display:block;
+      font-size:clamp(1rem, 1.8vw, 1.35rem);
+    }
+    .hero h1{
+      font-size:clamp(1.5rem, 3.3vw, 2.6rem);
+      line-height:1.1;
+      margin-bottom:20px;
+    }
+    .hero h1 span{ display:block; }
+    .hero p{
+      max-width:52ch;
+      color:var(--text-dim);
+      font-size:0.95rem;
+    }
+    .hero-stack{
+      display:flex;
+      gap:24px;
+      margin-top:auto;
+      flex-wrap:wrap;
+    }
+    .hero-stack div{
+      border-left:2px solid var(--accent);
+      padding-left:12px;
+    }
+    .hero-stack .num{
+      font-family:'Space Grotesk', sans-serif;
+      font-size:1.6rem;
+      font-weight:700;
+      display:block;
+    }
+    .hero-stack .label{
+      color:var(--text-dim);
+      font-size:0.85rem;
+    }
+
+    /* SECTION HEADING */
+    .section{ padding:80px 0; border-bottom:1px solid var(--line); }
+    .section-head{
+      display:flex;
+      justify-content:space-between;
+      align-items:baseline;
+      margin-bottom:44px;
+    }
+    .section-head h2{ font-size:1.6rem; }
+    .section-head .mono{ color:var(--text-dim); }
+
+    /* PROJECTS */
+    .projects-grid{
+      display:grid;
+      grid-template-columns:repeat(3, 1fr);
+      gap:40px 28px;
+    }
+    .project{
+      display:flex;
+      flex-direction:column;
+      gap:20px;
+    }
+
+    .project-thumb{
+      aspect-ratio:16/10;
+      background:linear-gradient(135deg, #23262d, #191b20);
+      border:1px solid var(--line);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:var(--text-dim);
+      font-family:'IBM Plex Mono', monospace;
+      font-size:0.75rem;
+      width:100%;
+      object-fit:cover;
+    }
+
+    .project-body h3{
+      font-size:1.25rem;
+      margin-bottom:8px;
+    }
+    .engine-tag{
+      display:inline-block;
+      color:var(--accent);
+      margin-bottom:14px;
+    }
+    .project-body p{
+      color:var(--text-dim);
+      margin-bottom:16px;
+      font-size:0.95rem;
+      max-width:60ch;
+    }
+    .chips{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      margin-bottom:16px;
+    }
+    .chip{
+      border:1px solid var(--line);
+      color:var(--text-dim);
+      padding:4px 10px;
+      border-radius:3px;
+    }
+    .project-links a{
+      text-decoration:none;
+      color:var(--text);
+      border-bottom:1px solid var(--accent);
+      padding-bottom:2px;
+      margin-right:20px;
+      font-size:0.9rem;
+    }
+
+    /* ABOUT */
+    .about-grid{
+      display:grid;
+      grid-template-columns:1.3fr 1fr;
+      gap:48px;
+    }
+    .about-grid p{ color:var(--text-dim); margin-bottom:16px; max-width:56ch; }
+    .skills dl{
+      display:grid;
+      grid-template-columns:auto 1fr;
+      gap:18px 40px;
+      font-size:0.9rem;
+      align-items:start;
+    }
+    .skills dt{ color:var(--text-dim); }
+    .lang-list{
+      list-style:none;
+      display:grid;
+      gap:12px;
+      max-width:340px;
+    }
+    .lang-list li{
+      display:grid;
+      grid-template-columns:5rem 1fr;
+      align-items:center;
+      gap:24px;
+    }
+    .level{ display:flex; gap:5px; }
+    .level i{
+      width:30px;
+      height:6px;
+      border-radius:3px;
+      background:var(--line);
+    }
+    .level i.on{ background:var(--accent); }
+
+    /* CONTACT */
+    footer.section{
+      border-bottom:none;
+      padding:80px 0 100px;
+    }
+    footer h2{ font-size:1.8rem; margin-bottom:20px; max-width:none; }
+    .contact-links{ display:flex; gap:28px; flex-wrap:wrap; margin-top:28px; }
+    .contact-links a{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      text-decoration:none;
+      border-bottom:1px solid var(--line);
+      padding-bottom:4px;
+      font-size:0.95rem;
+      transition:border-color .15s;
+    }
+    .contact-links a:hover{ border-color:var(--accent); }
+    .contact-icon{
+      width:18px;
+      height:18px;
+      object-fit:contain;
+      flex:0 0 auto;
+    }
+
+    @media (max-width:1000px){
+      .projects-grid{ grid-template-columns:repeat(2, 1fr); }
+    }
+    @media (max-width:720px){
+      .projects-grid{ grid-template-columns:1fr; }
+      .about-grid{ grid-template-columns:1fr; }
+      .nav-links{ display:none; }
+      .hero-grid{ flex-direction:column; align-items:flex-start; }
+      .hero-pic{ width:60%; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="nav-name">Iva Petrova</div>
+    <div class="nav-links">
+      <a href="#work">Work</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="hero-grid">
+      <img class="hero-pic" src="Images/profPic.jpg" alt="Iva Petrova">
+      <div class="hero-text">
+        <div class="hero-name">Iva Petrova</div>
+
+        <span class="hero-tag mono">gameplay programmer</span>
+        <h1>
+          <span>I make buttons feel good,</span>
+          <span>systems talk to each other,</span>
+          <span>and bugs regret existing.</span>
+        </h1>
+
+        <p>
+          I build gameplay from the input layer up: movement, combat,
+          abilities, AI, interaction, cameras, and the strange little
+          systems that turn a collection of mechanics into something
+          that actually feels like a game.
+        </p>
+
+        <div class="hero-stack">
+          <div>
+            <span class="num">04</span>
+            <span class="label">years making games</span>
+          </div>
+
+          <div>
+            <span class="num">03</span>
+            <span class="label">engines survived</span>
+          </div>
+
+          <div>
+            <span class="num">∞</span>
+            <span class="label">things I've debugged at 2am</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="section" id="work">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Selected work</h2>
+      <span class="mono">2023 — 2026</span>
+    </div>
+
+    <div class="projects-grid">
+      <div class="project">
+        <img class="project-thumb" src="Images/Lorchester.png" alt="Lorchester">
+        <div class="project-body">
+          <span class="engine-tag mono">Unity</span>
+          <h3>Lorchester</h3>
+          <p>2D puzzle-adventure platform game prototype.</p>
+          <div class="chips">
+            <span class="chip mono">C#</span>
+          </div>
+          <div class="project-links">
+            <a href="https://github.com/ivappetrova/Lorchester">Source</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="project">
+        <img class="project-thumb" src="Images/Scarex.png" alt="Scarex">
+        <div class="project-body">
+          <span class="engine-tag mono">Unreal Engine</span>
+          <h3>Scarex</h3>
+          <p>Third-person horror chase game prototype.</p>
+          <div class="chips">
+            <span class="chip mono">Blueprints</span>
+          </div>
+          <div class="project-links">
+            <a href="https://github.com/ivappetrova/Scarex">Source</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="project">
+        <img class="project-thumb" src="Images/BubbleEngine.png" alt="BubbleEngine">
+        <div class="project-body">
+          <span class="engine-tag mono">Custom Engine + Game</span>
+          <h3>BubbleEngine</h3>
+          <p>A 2D engine built from scratch for a university project. Used it to ship one full game - Bubble Bobble.</p>
+          <div class="chips">
+            <span class="chip mono">C++</span>
+            <span class="chip mono">OpenGL</span>
+          </div>
+          <div class="project-links">
+            <a href="https://github.com/ivappetrova/BubbleEngine">Source</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="project">
+        <img class="project-thumb" src="Images/PieRats.png" alt="PieRats">
+        <div class="project-body">
+          <span class="engine-tag mono">Unity</span>
+          <h3>PieRats</h3>
+          <p>A group project.</p>
+          <div class="chips">
+            <span class="chip mono">C#</span>
+          </div>
+          <div class="project-links">
+            <a href="https://franciszekrakowiecki.itch.io/pierats">Source</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="project">
+        <img class="project-thumb" src="Images/GhostsNGoblins.png" alt="GhostNGoblins">
+        <div class="project-body">
+          <span class="engine-tag mono">University Engine</span>
+          <h3>GhostNGoblins</h3>
+          <p>A recreation of a retro 2D platform game.</p>
+          <div class="chips">
+            <span class="chip mono">C++</span>
+          </div>
+          <div class="project-links">
+            <a href="https://github.com/ivappetrova/GhostsNGoblins">Source</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="project">
+        <img class="project-thumb" src="Images/Raytracer.png" alt="Raytracer">
+        <div class="project-body">
+          <span class="engine-tag mono">Graphics Programming</span>
+          <h3>Raytracer</h3>
+          <p>A project made for university course.</p>
+          <div class="chips">
+            <span class="chip mono">C++</span>
+          </div>
+          <div class="project-links">
+            <a href="https://github.com/ivappetrova/Raytracer">Source</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="project">
+        <img class="project-thumb" src="Images/DualRasterizer.png" alt="Dual Rasterizer">
+        <div class="project-body">
+          <span class="engine-tag mono">Graphics Programming</span>
+          <h3>Dual Rasterizer</h3>
+          <p>University project.</p>
+          <div class="chips">
+            <span class="chip mono">C++</span>
+          </div>
+          <div class="project-links">
+            <a href="https://github.com/ivappetrova/DualRasterizer">Source</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="project">
+        <img class="project-thumb" src="Images/ReflectingPheasant.png" alt="Reflecting Pheasant">
+        <div class="project-body">
+          <span class="engine-tag mono">Geometric Algebra</span>
+          <h3>Reflecting Pheasant</h3>
+          <p>A project made in the Flyfish engine using Geometric Algebra.</p>
+          <div class="chips">
+            <span class="chip mono">C++</span>
+          </div>
+          <div class="project-links">
+            <a href="https://github.com/ivappetrova/ReflectingPheasant">Source</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="project">
+        <img class="project-thumb" src="Images/LuaSnake.png" alt="Lua Snake">
+        <div class="project-body">
+          <span class="engine-tag mono">Lua integration into C++ engine</span>
+          <h3>Lua Snake</h3>
+          <p>A Lua game integrated in a university engine.</p>
+          <div class="chips">
+            <span class="chip mono">Lua</span>
+          </div>
+          <div class="project-links">
+            <a href="https://github.com/ivappetrova/LuaSnake">Source</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="about">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>About</h2>
+    </div>
+    <div class="about-grid">
+      <div>
+        <p>I’ve always been drawn to games, from streaming the ones I love to bringing their characters to life through cosplay. Eventually, that curiosity shifted from wanting to experience games to wanting to understand how they’re made, and especially how the characters inside them come alive.</p>
+        <p>That led me to Howest DAE, where I’m specializing in Game Development and turning that passion into a career. I’m particularly interested in gameplay AI programming, while also exploring engine development and the systems that make games work behind the scenes.</p>
+      </div>
+      <div class="skills">
+        <dl>
+          <dt>Engines</dt>
+          <dd>Unity, Unreal Engine 5</dd>
+
+          <dt>Languages</dt>
+          <dd>
+            <ul class="lang-list">
+              <li><span>C++</span><span class="level" title="Advanced"><i class="on"></i><i class="on"></i><i class="on"></i></span></li>
+              <li><span>C#</span><span class="level" title="Advanced"><i class="on"></i><i class="on"></i><i class="on"></i></span></li>
+              <li><span>Python</span><span class="level" title="Intermediate"><i class="on"></i><i class="on"></i><i></i></span></li>
+              <li><span>Lua</span><span class="level" title="Familiar"><i class="on"></i><i></i><i></i></span></li>
+              <li><span>SQL</span><span class="level" title="Familiar"><i class="on"></i><i></i><i></i></span></li>
+              <li><span>Regex</span><span class="level" title="Familiar"><i class="on"></i><i></i><i></i></span></li>
+            </ul>
+          </dd>
+
+          <dt>Focus</dt>
+          <dd>Gameplay systems, AI</dd>
+          <dt>Currently</dt>
+          <dd>Developing an original game concept</dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="section" id="contact">
+  <div class="wrap">
+    <h2>Looking for an intern?</h2>
+    <p style="color:var(--text-dim); max-width:48ch;">Open to gameplay programming roles.</p>
+    <div class="contact-links">
+      <a href="mailto:ivaxppetrova@gmail.com"><img class="contact-icon" src="Images/Gmail.png" alt="">ivaxppetrova@gmail.com</a>
+      <a href="https://github.com/ivappetrova"><img class="contact-icon" src="Images/GitHub.png" alt="">GitHub</a>
+      <a href="https://www.linkedin.com/in/ivappetrova/"><img class="contact-icon" src="Images/LinkedIn.png" alt="">LinkedIn</a>
+      <a href="https://ivaxppetrova.itch.io/"><img class="contact-icon" src="Images/Itch.png" alt="">itch.io</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
