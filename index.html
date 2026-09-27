@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Iva Petrova- Game Dev</title>
+  <title>Iva Petrova - Game Developer</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500&display=swap');
 
@@ -120,26 +120,38 @@
       max-width:52ch;
       color:var(--text-dim);
       font-size:0.95rem;
+      margin-top:28px;
     }
     .hero-stack{
-      display:flex;
-      gap:24px;
       margin-top:auto;
-      flex-wrap:wrap;
     }
-    .hero-stack div{
-      border-left:2px solid var(--accent);
-      padding-left:12px;
+    .status-badge{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      border:1px solid var(--line);
+      border-radius:999px;
+      padding:10px 18px;
     }
-    .hero-stack .num{
-      font-family:'Space Grotesk', sans-serif;
-      font-size:1.6rem;
-      font-weight:700;
-      display:block;
+    .status-dot{
+      width:8px;
+      height:8px;
+      border-radius:50%;
+      background:#7fd68a;
+      box-shadow:0 0 0 0 rgba(127,214,138,0.5);
+      animation:pulse 2s infinite;
+      flex:0 0 auto;
     }
-    .hero-stack .label{
-      color:var(--text-dim);
-      font-size:0.85rem;
+    @keyframes pulse{
+      0%{ box-shadow:0 0 0 0 rgba(127,214,138,0.45); }
+      70%{ box-shadow:0 0 0 8px rgba(127,214,138,0); }
+      100%{ box-shadow:0 0 0 0 rgba(127,214,138,0); }
+    }
+    .status-badge span{
+      font-size:0.9rem;
+    }
+    .status-badge .status-main{
+      color:var(--text);
     }
 
     /* SECTION HEADING */
@@ -324,29 +336,22 @@
 
         <span class="hero-tag mono">gameplay programmer</span>
         <h1>
-          <span>I make buttons feel good,</span>
-          <span>systems talk to each other,</span>
-          <span>and bugs regret existing.</span>
+          <span>I work under the hood,</span>
+          <span>and make the game feel good.</span>
         </h1>
 
         <p>
-          I build gameplay from the input layer up: movement, combat,
-          abilities, AI, interaction, cameras, and the strange little
-          systems that turn a collection of mechanics into something
-          that actually feels like a game.
+          From the first input to the final interaction, 
+          I build the systems that bring gameplay to life. 
+          My work spans movement, combat, abilities, AI, interaction, 
+          and the underlying systems that connect them all together.
         </p>
 
         <div class="hero-stack">
-          <div>
-            <span class="num">04</span>
-            <span class="label">years making games</span>
+          <div class="status-badge mono">
+            <span class="status-dot"></span>
+            <span class="status-main">Open for Q1 2027 internships</span>
           </div>
-
-          <div>
-            <span class="num">03</span>
-            <span class="label">engines survived</span>
-          </div>
-          
         </div>
       </div>
     </div>
@@ -359,23 +364,40 @@
       <h2>Selected work</h2>
       <span class="mono">2023 — 2026</span>
     </div>
-
-    <div class="project">
-      <img class="project-thumb" src="Images/Scarex.png" alt="Scarex">
-      <div class="project-body">
-        <span class="engine-tag mono">Unreal Engine</span>
-        <h3>Scarex</h3>
-        <p>Third-person horror chase game prototype.</p>
-        <div class="chips">
-          <span class="chip mono">Blueprints</span>
-        </div>
-        <div class="project-links">
-          <a href="https://github.com/ivappetrova/Scarex">Source</a>
-        </div>
-      </div>
-    </div>
     
     <div class="projects-grid">
+
+      <div class="project">
+        <img class="project-thumb" src="Images/PieRats.png" alt="PieRats">
+        <div class="project-body">
+          <span class="engine-tag mono">Unity</span>
+          <h3>PieRats</h3>
+          <p>Group project.</p>
+          <div class="chips">
+            <span class="chip mono">C#</span>
+          </div>
+          <div class="project-links">
+            <a href="https://franciszekrakowiecki.itch.io/pierats">Source</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="project">
+        <img class="project-thumb" src="Images/BubbleEngine.png" alt="BubbleEngine">
+        <div class="project-body">
+          <span class="engine-tag mono">Custom Engine</span>
+          <h3>BubbleEngine</h3>
+          <p>A 2D engine built from scratch for a university project. Used it to recreate the retro platform game Bubble Bobble.</p>
+          <div class="chips">
+            <span class="chip mono">C++</span>
+            <span class="chip mono">OpenGL</span>
+          </div>
+          <div class="project-links">
+            <a href="https://github.com/ivappetrova/BubbleEngine">Source</a>
+          </div>
+        </div>
+      </div>
+      
       <div class="project">
         <img class="project-thumb" src="Images/Lorchester.png" alt="Lorchester">
         <div class="project-body">
@@ -392,32 +414,16 @@
       </div>
 
       <div class="project">
-        <img class="project-thumb" src="Images/BubbleEngine.png" alt="BubbleEngine">
+        <img class="project-thumb" src="Images/Scarex.png" alt="Scarex">
         <div class="project-body">
-          <span class="engine-tag mono">Custom Engine</span>
-          <h3>BubbleEngine</h3>
-          <p>A 2D engine built from scratch for a university project. Used it to ship one full game - Bubble Bobble.</p>
+          <span class="engine-tag mono">Unreal Engine</span>
+          <h3>Scarex</h3>
+          <p>Third-person horror chase game prototype.</p>
           <div class="chips">
-            <span class="chip mono">C++</span>
-            <span class="chip mono">OpenGL</span>
+            <span class="chip mono">Blueprints</span>
           </div>
           <div class="project-links">
-            <a href="https://github.com/ivappetrova/BubbleEngine">Source</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="project">
-        <img class="project-thumb" src="Images/PieRats.png" alt="PieRats">
-        <div class="project-body">
-          <span class="engine-tag mono">Unity</span>
-          <h3>PieRats</h3>
-          <p>A group project.</p>
-          <div class="chips">
-            <span class="chip mono">C#</span>
-          </div>
-          <div class="project-links">
-            <a href="https://franciszekrakowiecki.itch.io/pierats">Source</a>
+            <a href="https://github.com/ivappetrova/Scarex">Source</a>
           </div>
         </div>
       </div>
@@ -434,6 +440,7 @@
           </div>
           <div class="project-links">
             <a href="https://github.com/ivappetrova/GhostsNGoblins">Source</a>
+            <a href="https://www.youtube.com/watch?v=8V2gZA79Yl0">Video</a>
           </div>
         </div>
       </div>
@@ -443,57 +450,12 @@
         <div class="project-body">
           <span class="engine-tag mono">Howest DAE's Engine</span>
           <h3>Lua Snake</h3>
-          <p>A Lua game integrated in a Howest DAE's Engine.</p>
+          <p>A Lua game integrated in the Howest DAE's Engine.</p>
           <div class="chips">
             <span class="chip mono">Lua</span>
           </div>
           <div class="project-links">
             <a href="https://github.com/ivappetrova/LuaSnake">Source</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="project">
-        <img class="project-thumb" src="Images/ReflectingPheasant.png" alt="Reflecting Pheasant">
-        <div class="project-body">
-          <span class="engine-tag mono">Flyfish</span>
-          <h3>Reflecting Pheasant</h3>
-          <p>A project made in the Flyfish engine using Geometric Algebra.</p>
-          <div class="chips">
-            <span class="chip mono">C++</span>
-          </div>
-          <div class="project-links">
-            <a href="https://github.com/ivappetrova/ReflectingPheasant">Source</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="project">
-        <img class="project-thumb" src="Images/Raytracer.png" alt="Raytracer">
-        <div class="project-body">
-          <span class="engine-tag mono">Howest DAE's Engine</span>
-          <h3>Raytracer</h3>
-          <p>A project made for university course.</p>
-          <div class="chips">
-            <span class="chip mono">C++</span>
-          </div>
-          <div class="project-links">
-            <a href="https://github.com/ivappetrova/Raytracer">Source</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="project">
-        <img class="project-thumb" src="Images/DualRasterizer.png" alt="Dual Rasterizer">
-        <div class="project-body">
-          <span class="engine-tag mono">Howest DAE's Engine</span>
-          <h3>Dual Rasterizer</h3>
-          <p>University project.</p>
-          <div class="chips">
-            <span class="chip mono">C++</span>
-          </div>
-          <div class="project-links">
-            <a href="https://github.com/ivappetrova/DualRasterizer">Source</a>
           </div>
         </div>
       </div>
