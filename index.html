@@ -22,7 +22,7 @@
       --mx:50%; --my:30%;
     }
     *{ box-sizing:border-box; margin:0; padding:0; }
-    html{ scroll-behavior:smooth; scroll-padding-top:80px; }
+    html{ scroll-behavior:smooth; scroll-padding-top:96px; }
     body{
       background:var(--bg); color:var(--text);
       font-family:'Inter',sans-serif; line-height:1.6;
@@ -37,23 +37,39 @@
     /* progress + nav */
     .progress{ position:fixed; top:0; left:0; height:3px; width:0; z-index:30;
       background:linear-gradient(90deg,var(--accent),var(--accent-hi)); }
-    nav{
-      position:sticky; top:0; z-index:20;
-      background:rgb(14 12 22 / .75); backdrop-filter:blur(12px);
-      border-bottom:1px solid var(--line);
+    nav{ position:sticky; top:0; z-index:20; padding:12px clamp(12px,3vw,32px); pointer-events:none; }
+    .nav-bar{
+      pointer-events:auto; max-width:1180px; margin:0 auto; height:56px; padding:0 14px 0 10px;
+      display:grid; grid-template-columns:1fr auto 1fr; align-items:center; gap:16px;
+      background:rgb(20 17 34 / .72); backdrop-filter:blur(14px) saturate(140%);
+      border:1px solid var(--line); border-radius:999px;
+      box-shadow:0 10px 30px rgb(0 0 0 / .35), inset 0 1px 0 rgb(255 255 255 / .05);
     }
-    nav .wrap{ display:flex; justify-content:space-between; align-items:center; height:64px; }
-    .nav-name{ font-family:'Space Grotesk',sans-serif; font-weight:700; text-decoration:none; }
-    .nav-links{ display:flex; gap:6px; }
+    .nav-name{ display:inline-flex; align-items:center; gap:10px; justify-self:start; text-decoration:none;
+      font-family:'Space Grotesk',sans-serif; font-weight:700; }
+    .nav-mark{
+      width:36px; height:36px; border-radius:50%; display:grid; place-items:center;
+      background:linear-gradient(135deg,var(--accent),var(--accent-hi)); color:#120d22;
+      font-size:.8rem; letter-spacing:0; transition:transform .3s cubic-bezier(.2,.7,.2,1);
+    }
+    .nav-name:hover .nav-mark{ transform:rotate(-10deg) scale(1.08); }
+    .nav-links{ position:relative; display:flex; gap:2px; padding:4px; border-radius:999px;
+      background:rgb(255 255 255 / .03); border:1px solid var(--line); }
     .nav-links a{
-      text-decoration:none; color:var(--dim); font-size:.9rem;
-      padding:6px 14px; border-radius:999px; transition:color .2s, background .2s;
+      position:relative; z-index:1; text-decoration:none; color:var(--dim); font-size:.9rem;
+      padding:6px 18px; border-radius:999px; transition:color .2s;
     }
-    .nav-links a:hover{ color:var(--text); }
-    .nav-links a.active{ color:var(--text); background:var(--card); }
+    .nav-links a:hover, .nav-links a.active{ color:var(--text); }
+    .nav-ind{
+      position:absolute; z-index:0; top:4px; bottom:4px; left:0; width:0; border-radius:999px; opacity:0;
+      background:var(--card); box-shadow:inset 0 0 0 1px var(--accent), 0 4px 14px rgb(157 134 208 / .2);
+      transition:transform .35s cubic-bezier(.2,.7,.2,1), width .35s cubic-bezier(.2,.7,.2,1), opacity .25s;
+    }
+    .nav-status{ justify-self:end; display:inline-flex; align-items:center; gap:8px; color:var(--dim);
+      border:1px solid var(--line); background:var(--bg-soft); border-radius:999px; padding:6px 14px; font-size:.75rem; }
 
     /* hero */
-    .hero{ position:relative; display:flex; align-items:center; min-height:min(720px,calc(100vh - 64px)); padding:72px 0 88px; border-bottom:1px solid var(--line); overflow:hidden; }
+    .hero{ position:relative; display:flex; align-items:center; min-height:min(720px,calc(100vh - 80px)); padding:72px 0 88px; border-bottom:1px solid var(--line); overflow:hidden; }
     .hero > .wrap{ width:100%; }
     .hero::before{
       content:""; position:absolute; inset:0; pointer-events:none;
@@ -152,6 +168,33 @@
     .project:hover .more::after{ transform:rotate(90deg); }
     .project-links{ display:none; }
 
+    .proj-label{ display:flex; align-items:baseline; gap:14px; margin-bottom:22px; font-size:1.15rem; }
+    .proj-label .mono{ color:var(--dim); }
+    .proj-block + .proj-block{ margin-top:72px; }
+    .featured-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:28px; margin-bottom:28px; }
+    .row[hidden]{ display:none; }
+    .project.big .thumb{ aspect-ratio:16/9; }
+    .project.big .project-body{ padding:28px 32px 32px; }
+    .project.big h3{ font-size:1.8rem; margin-bottom:12px; }
+    .project.big p{ font-size:1rem; -webkit-line-clamp:4; }
+    .other-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:24px; }
+    .mini{
+      display:grid; grid-template-columns:minmax(150px,42%) 1fr; text-decoration:none; color:inherit;
+      background:var(--bg-soft); border:1px solid var(--line); border-radius:12px; overflow:hidden;
+      transition:transform .3s cubic-bezier(.2,.7,.2,1), border-color .3s, background .3s, box-shadow .3s;
+    }
+    a.mini:hover{ transform:translateY(-4px); border-color:var(--accent); background:var(--card); box-shadow:0 14px 32px rgb(0 0 0 / .35); }
+    .mini-thumb{ position:relative; overflow:hidden; min-height:150px;
+      background:linear-gradient(135deg,#1d1838,#120f20); border-right:1px solid var(--line); }
+    .mini-thumb img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; transition:transform .5s cubic-bezier(.2,.7,.2,1); }
+    a.mini:hover .mini-thumb img{ transform:scale(1.06); }
+    .mini-body{ display:flex; flex-direction:column; gap:8px; padding:20px 22px; min-width:0; }
+    .mini h4{ font-size:1.1rem; display:flex; justify-content:space-between; gap:8px; }
+    .mini h4 .arrow{ color:var(--accent-hi); transition:transform .25s; }
+    a.mini:hover .arrow{ transform:translate(3px,-3px); }
+    .mini p{ color:var(--dim); font-size:.9rem; }
+    .mini .chips{ margin-top:auto; padding-top:6px; }
+
     /* modal */
     dialog{
       margin:auto; width:min(720px,92vw); max-height:90vh; overflow:auto;
@@ -176,7 +219,9 @@
     /* about */
     .about-intro{ display:flex; align-items:center; gap:clamp(28px,5vw,72px); margin-bottom:56px; }
     .about-text{ flex:1; min-width:0; }
-    .skills-row{ display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+    .skills-row{ display:grid; grid-template-columns:1fr; gap:20px; }
+    .skills-grid{ display:grid; grid-template-columns:1fr 1fr; grid-template-rows:auto auto; grid-auto-flow:column; gap:24px 28px; }
+    .skills-grid .skill-group{ margin-bottom:0; }
     .about-text p{ color:var(--dim); margin-bottom:18px; max-width:62ch; }
         .skills{ background:var(--bg-soft); border:1px solid var(--line); border-radius:12px; padding:26px 28px; }
     .skills-title{ font-size:1.05rem; margin-bottom:20px; }
@@ -193,6 +238,14 @@
     .now li{ position:relative; padding-left:20px; margin-bottom:4px; }
     .now li::before{ content:""; position:absolute; left:0; top:.6em; width:7px; height:7px; border-radius:50%; background:var(--accent); animation:pulse2 2.4s infinite; }
     @keyframes pulse2{ 0%{ box-shadow:0 0 0 0 rgb(157 134 208 / .5); } 70%,100%{ box-shadow:0 0 0 8px rgb(157 134 208 / 0); } }
+
+    .now-section{ padding:64px 0; }
+    .now-section .section-head{ margin-bottom:24px; }
+    .now-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:20px; }
+    .now-card{ position:relative; background:var(--bg-soft); border:1px solid var(--line); border-radius:12px; padding:20px 26px 20px 50px; }
+    .now-card::before{ content:""; position:absolute; left:26px; top:27px; width:8px; height:8px; border-radius:50%; background:var(--accent); animation:pulse2 2.4s infinite; }
+    .now-card .mono{ color:var(--accent-hi); }
+    .now-card p{ font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:1.2rem; }
 
     /* contact */
     .contact{ padding:96px 0 120px; }
@@ -212,12 +265,16 @@
     .reveal{ opacity:0; transform:translateY(24px); transition:opacity .6s ease, transform .6s cubic-bezier(.2,.7,.2,1); transition-delay:var(--d,0ms); }
     .reveal.in{ opacity:1; transform:none; }
 
-    @media (max-width:1000px){ .projects-grid{ grid-template-columns:repeat(2,1fr); } }
+    @media (max-width:1000px){ .projects-grid{ grid-template-columns:repeat(2,1fr); } .other-grid{ grid-template-columns:repeat(2,1fr); } }
+    @media (max-width:900px){ .nav-bar{ grid-template-columns:1fr auto; } .nav-status{ display:none; } }
+    @media (max-width:560px){ .nav-text{ display:none; } }
+    @media (max-width:720px){ .mini{ grid-template-columns:1fr; } .mini-thumb{ aspect-ratio:16/9; min-height:0; border-right:0; border-bottom:1px solid var(--line); } }
     @media (max-width:720px){
-      .projects-grid,.skills-row{ grid-template-columns:1fr; }
+      .projects-grid,.featured-grid,.other-grid,.skills-grid,.now-grid{ grid-template-columns:1fr; }
+      .skills-grid{ grid-template-rows:none; grid-auto-flow:row; }
       .about-intro{ flex-direction:column; align-items:flex-start; }
       .pic-wrap{ width:60%; }
-      .nav-links a{ padding:6px 10px; font-size:.85rem; }
+      .nav-links a{ padding:6px 12px; font-size:.85rem; }
       .m-body{ padding:22px; }
     }
     @media (prefers-reduced-motion:reduce){
@@ -231,13 +288,18 @@
 <div class="progress" id="progress"></div>
 
 <nav>
-  <div class="wrap">
-    <a class="nav-name" href="#top">Iva Petrova</a>
+  <div class="nav-bar">
+    <a class="nav-name" href="#top" aria-label="Iva Petrova, back to top">
+      <span class="nav-mark" aria-hidden="true">IP</span>
+      <span class="nav-text">Iva Petrova</span>
+    </a>
     <div class="nav-links">
+      <span class="nav-ind" id="nav-ind" aria-hidden="true"></span>
       <a href="#work">Work</a>
       <a href="#about">About</a>
       <a href="#contact">Contact</a>
     </div>
+    <span class="nav-status mono"><span class="status-dot"></span>Open for Q1 2027</span>
   </div>
 </nav>
 
@@ -269,7 +331,7 @@
 <section class="section" id="work">
   <div class="wrap">
     <div class="section-head reveal">
-      <h2>Selected work</h2>
+      <h2>Work</h2>
       <span class="mono">2023 — 2026</span>
     </div>
 
@@ -280,9 +342,11 @@
       <button class="filter" data-f="engine" aria-pressed="false">Custom engines</button>
     </div>
 
-    <div class="projects-grid" id="grid">
+    <div class="proj-block">
+      <h3 class="proj-label reveal">Selected projects</h3>
+      <div class="featured-grid row">
 
-      <button class="project reveal" data-cat="unity" style="--d:0ms">
+      <button class="project big reveal" data-cat="unity" style="--d:0ms">
         <div class="thumb"><img class="project-thumb" src="Images/PieRats.png" alt="PieRats screenshot"></div>
         <div class="project-body">
           <span class="engine-tag mono">Unity</span>
@@ -290,11 +354,11 @@
           <p>Using C#, I programmed the behavior of all environmental hazards and their interactions with the player, built the in-game HUD, and developed the backend for several menus and UI.</p>
           <div class="chips"><span class="chip mono">C#</span></div>
           <span class="more">Details</span>
-          <div class="project-links"><a href="https://franciszekrakowiecki.itch.io/pierats">Source</a></div>
+          <div class="project-links"><a href="https://franciszekrakowiecki.itch.io/pierats">Itch.io page</a></div>
         </div>
       </button>
 
-      <button class="project reveal" data-cat="engine" style="--d:80ms">
+      <button class="project big reveal" data-cat="engine" style="--d:80ms">
         <div class="thumb"><img class="project-thumb" src="Images/BubbleEngine.png" alt="BubbleEngine screenshot"></div>
         <div class="project-body">
           <span class="engine-tag mono">Custom Engine</span>
@@ -306,7 +370,10 @@
         </div>
       </button>
 
-      <button class="project reveal" data-cat="unity" style="--d:160ms">
+      </div>
+      <div class="projects-grid row" id="grid">
+
+      <button class="project reveal" data-cat="unity" style="--d:0ms">
         <div class="thumb"><img class="project-thumb" src="Images/Lorchester.png" alt="Lorchester screenshot"></div>
         <div class="project-body">
           <span class="engine-tag mono">Unity</span>
@@ -318,7 +385,7 @@
         </div>
       </button>
 
-      <button class="project reveal" data-cat="unreal" style="--d:0ms">
+      <button class="project reveal" data-cat="unreal" style="--d:80ms">
         <div class="thumb"><img class="project-thumb" src="Images/Scarex.png" alt="Scarex screenshot"></div>
         <div class="project-body">
           <span class="engine-tag mono">Unreal Engine</span>
@@ -330,7 +397,7 @@
         </div>
       </button>
 
-      <button class="project reveal" data-cat="engine" style="--d:80ms">
+      <button class="project reveal" data-cat="engine" style="--d:160ms">
         <div class="thumb"><img class="project-thumb" src="Images/GhostsNGoblins.png" alt="GhostNGoblins screenshot"></div>
         <div class="project-body">
           <span class="engine-tag mono">Howest DAE's Engine</span>
@@ -338,25 +405,48 @@
           <p>My first game development project, recreating the core gameplay and mechanics of the 2D retro classic Ghosts 'n Goblins using C++, SDL, and Howest DAE's custom game engine.</p>
           <div class="chips"><span class="chip mono">C++</span></div>
           <span class="more">Details</span>
-          <div class="project-links">
-            <a href="https://github.com/ivappetrova/GhostsNGoblins">Source</a>
-            <a href="https://www.youtube.com/watch?v=8V2gZA79Yl0">Video</a>
-          </div>
+          <div class="project-links"><a href="https://github.com/ivappetrova/GhostsNGoblins">Source</a><a href="https://www.youtube.com/watch?v=8V2gZA79Yl0">Video</a></div>
         </div>
       </button>
+      </div>
+    </div>
 
-      <button class="project reveal" data-cat="engine" style="--d:160ms">
-        <div class="thumb"><img class="project-thumb" src="Images/LuaSnake.png" alt="Lua Snake screenshot"></div>
-        <div class="project-body">
-          <span class="engine-tag mono">Howest DAE's Engine</span>
-          <h3>Lua Snake</h3>
+    <div class="proj-block">
+      <h3 class="proj-label reveal">Other projects</h3>
+      <div class="other-grid">
+      <a class="mini reveal" href="https://github.com/ivappetrova/ReflectingPheasant" target="_blank" rel="noopener">
+        <div class="mini-thumb"><img src="Images/ReflectingPheasant.png" alt="Reflecting Pheasant screenshot" loading="lazy" onerror="this.remove()"></div>
+        <div class="mini-body">
+          <h4>Reflecting Pheasant<span class="arrow" aria-hidden="true">↗</span></h4>
+          <p>A Vulkan compute-shader raytracer scene where all movement and mirroring is done with Projective Geometric Algebra: translation and rotation motors, an orbiting pheasant, and its reflection via the sandwich product.</p>
+          <div class="chips"><span class="chip mono">C++</span><span class="chip mono">Vulkan</span><span class="chip mono">GLSL</span></div>
+        </div>
+      </a>
+      <a class="mini reveal" href="https://github.com/ivappetrova/LuaSnake" target="_blank" rel="noopener">
+        <div class="mini-thumb"><img src="Images/LuaSnake.png" alt="Lua Snake screenshot" loading="lazy" onerror="this.remove()"></div>
+        <div class="mini-body">
+          <h4>Lua Snake<span class="arrow" aria-hidden="true">↗</span></h4>
           <p>A Lua snake game running on Howest DAE's Win32 game engine, with the engine's drawing, input, and game loop functions exposed to Lua through Sol2 bindings.</p>
           <div class="chips"><span class="chip mono">Lua</span></div>
-          <span class="more">Details</span>
-          <div class="project-links"><a href="https://github.com/ivappetrova/LuaSnake">Source</a></div>
         </div>
-      </button>
-
+      </a>
+      <a class="mini reveal" href="https://github.com/ivappetrova/Raytracer" target="_blank" rel="noopener">
+        <div class="mini-thumb"><img src="Images/Raytracer.png" alt="Raytracer screenshot" loading="lazy" onerror="this.remove()"></div>
+        <div class="mini-body">
+          <h4>Raytracer<span class="arrow" aria-hidden="true">↗</span></h4>
+          <p>A CPU raytracer built for my graphics programming course. It renders spheres, planes and triangle meshes with shadows, point and directional lights, and physically based Cook-Torrance materials, with a free-fly camera.</p>
+          <div class="chips"><span class="chip mono">C++</span><span class="chip mono">SDL</span></div>
+        </div>
+      </a>
+      <a class="mini reveal" href="https://github.com/ivappetrova/DualRasterizer" target="_blank" rel="noopener">
+        <div class="mini-thumb"><img src="Images/DualRasterizer.png" alt="Dual Rasterizer screenshot" loading="lazy" onerror="this.remove()"></div>
+        <div class="mini-body">
+          <h4>Dual Rasterizer<span class="arrow" aria-hidden="true">↗</span></h4>
+          <p>One renderer that draws the same scene with either my software rasterizer or DirectX 11, switchable live. Features normal mapping, Lambert and Phong shading, and an alpha-blended fire effect.</p>
+          <div class="chips"><span class="chip mono">C++</span><span class="chip mono">DirectX 11</span><span class="chip mono">HLSL</span></div>
+        </div>
+      </a>
+      </div>
     </div>
   </div>
 </section>
@@ -372,6 +462,16 @@
     <div class="m-links" id="m-links"></div>
   </div>
 </dialog>
+
+<section class="section now-section" id="now">
+  <div class="wrap">
+    <div class="section-head reveal"><h2>Currently working on</h2></div>
+    <div class="now-grid">
+      <div class="now-card reveal"><span class="mono">Unity</span><p>Team project</p></div>
+      <div class="now-card reveal" style="--d:100ms"><span class="mono">Unreal Engine 5</span><p>Original game concept</p></div>
+    </div>
+  </div>
+</section>
 
 <section class="section" id="about">
   <div class="wrap">
@@ -392,30 +492,23 @@
     <div class="skills-row">
       <div class="skills reveal">
         <h3 class="skills-title">Technical profile</h3>
-        <div class="skill-group">
-          <h4>Engines</h4>
-          <div class="tags"><span class="tag">Unity</span><span class="tag">Unreal Engine 5</span></div>
-        </div>
-        <div class="skill-group">
-          <h4>Specialization</h4>
-          <div class="tags"><span class="tag">Gameplay Systems</span><span class="tag">Game AI</span></div>
-        </div>
-        <div class="skill-group">
-          <h4>Currently working on</h4>
-          <ul class="now">
-            <li>Original game concept in Unreal Engine 5</li>
-            <li>Team project in Unity</li>
-          </ul>
-        </div>
-      </div>
-      <div class="skills reveal" style="--d:100ms">
-        <div class="skill-group">
-          <h4>Core languages</h4>
-          <div class="tags"><span class="tag">C++</span><span class="tag">C#</span></div>
-        </div>
-        <div class="skill-group">
-          <h4>Additional languages</h4>
-          <div class="tags"><span class="tag">Python</span><span class="tag">Lua</span><span class="tag">SQL</span></div>
+        <div class="skills-grid">
+          <div class="skill-group">
+            <h4>Specialization</h4>
+            <div class="tags"><span class="tag">Gameplay Systems</span><span class="tag">Game AI</span></div>
+          </div>
+          <div class="skill-group">
+            <h4>Engines</h4>
+            <div class="tags"><span class="tag">Unity</span><span class="tag">Unreal Engine 5</span></div>
+          </div>
+          <div class="skill-group">
+            <h4>Core languages</h4>
+            <div class="tags"><span class="tag">C++</span><span class="tag">C#</span></div>
+          </div>
+          <div class="skill-group">
+            <h4>Additional languages</h4>
+            <div class="tags"><span class="tag">Python</span><span class="tag">Lua</span><span class="tag">SQL</span></div>
+          </div>
         </div>
       </div>
     </div>
@@ -460,16 +553,28 @@
   }, {threshold:.12});
   $$('.reveal').forEach(function(el){ io.observe(el); });
 
-  /* active nav link */
-  var links = $$('.nav-links a');
+  /* active nav link + sliding indicator */
+  var links = $$('.nav-links a'), ind = $('#nav-ind'), navLinks = $('.nav-links');
+  function activeLink(){ return links.filter(function(a){ return a.classList.contains('active'); })[0]; }
+  function moveInd(a){
+    if(!a){ ind.style.opacity = 0; return; }
+    ind.style.width = a.offsetWidth + 'px';
+    ind.style.transform = 'translateX(' + a.offsetLeft + 'px)';
+    ind.style.opacity = 1;
+  }
+  links.forEach(function(a){ a.addEventListener('mouseenter', function(){ moveInd(a); }); a.addEventListener('focus', function(){ moveInd(a); }); });
+  navLinks.addEventListener('mouseleave', function(){ moveInd(activeLink()); });
+  addEventListener('resize', function(){ moveInd(activeLink()); });
+  addEventListener('load', function(){ moveInd(activeLink()); });
   var spy = new IntersectionObserver(function(es){
     es.forEach(function(e){
       if(e.isIntersecting){
         links.forEach(function(a){ a.classList.toggle('active', a.getAttribute('href') === '#' + e.target.id); });
+        moveInd(activeLink());
       }
     });
   }, {rootMargin:'-45% 0px -50% 0px'});
-  ['work','about','contact'].forEach(function(id){ spy.observe(document.getElementById(id)); });
+  ['top','work','about','contact'].forEach(function(id){ spy.observe(document.getElementById(id)); });
 
   /* hero cursor glow + photo tilt */
   var hero = $('.hero'), tilt = $('#tilt'), pw = $('.pic-wrap');
@@ -514,6 +619,11 @@
     b.addEventListener('click', function(){
       $$('.filter').forEach(function(x){ x.setAttribute('aria-pressed', x === b); });
       var f = b.dataset.f;
+      $$('.row').forEach(function(r){
+        var any = $$('.project', r).some(function(c){ return f === 'all' || c.dataset.cat === f; });
+        if(any){ r.hidden = false; }
+        else { setTimeout(function(){ r.hidden = true; }, reduce ? 0 : 250); }
+      });
       cards.forEach(function(c){
         var show = f === 'all' || c.dataset.cat === f;
         if(show){
