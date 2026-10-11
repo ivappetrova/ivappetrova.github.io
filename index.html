@@ -127,16 +127,6 @@
     .section-head h2{ font-size:clamp(1.6rem,3vw,2.1rem); }
     .section-head .mono{ color:var(--dim); }
 
-    /* filter */
-    .filters{ display:flex; gap:10px; flex-wrap:wrap; margin-bottom:40px; }
-    .filter{
-      font:inherit; font-size:.85rem; cursor:pointer; color:var(--dim);
-      background:transparent; border:1px solid var(--line); border-radius:999px; padding:7px 16px;
-      transition:color .2s, border-color .2s, background .2s;
-    }
-    .filter:hover{ color:var(--text); border-color:var(--accent); }
-    .filter[aria-pressed="true"]{ color:#120d22; background:var(--accent); border-color:var(--accent); }
-
     /* projects */
     .projects-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:28px; }
     .project{
@@ -183,15 +173,12 @@
       background:var(--bg-soft); border:1px solid var(--line); border-radius:12px; overflow:hidden;
       transition:transform .3s cubic-bezier(.2,.7,.2,1), border-color .3s, background .3s, box-shadow .3s;
     }
-    a.mini:hover{ transform:translateY(-4px); border-color:var(--accent); background:var(--card); box-shadow:0 14px 32px rgb(0 0 0 / .35); }
+    .mini-links{ display:flex; gap:12px; margin-top:10px; }
     .mini-thumb{ position:relative; overflow:hidden; min-height:150px;
       background:linear-gradient(135deg,#1d1838,#120f20); border-right:1px solid var(--line); }
     .mini-thumb img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; transition:transform .5s cubic-bezier(.2,.7,.2,1); }
-    a.mini:hover .mini-thumb img{ transform:scale(1.06); }
     .mini-body{ display:flex; flex-direction:column; gap:8px; padding:20px 22px; min-width:0; }
     .mini h4{ font-size:1.1rem; display:flex; justify-content:space-between; gap:8px; }
-    .mini h4 .arrow{ color:var(--accent-hi); transition:transform .25s; }
-    a.mini:hover .arrow{ transform:translate(3px,-3px); }
     .mini p{ color:var(--dim); font-size:.9rem; }
     .mini .chips{ margin-top:auto; padding-top:6px; }
 
@@ -245,6 +232,7 @@
     .now-card{ position:relative; background:var(--bg-soft); border:1px solid var(--line); border-radius:12px; padding:20px 26px 20px 50px; }
     .now-card::before{ content:""; position:absolute; left:26px; top:27px; width:8px; height:8px; border-radius:50%; background:var(--accent); animation:pulse2 2.4s infinite; }
     .now-card .mono{ color:var(--accent-hi); }
+    .client-tag{ display:inline-block; margin-top:10px; font-size:.72rem; letter-spacing:.06em; text-transform:uppercase; color:var(--accent-hi); border:1px solid var(--accent); border-radius:999px; padding:3px 10px; }
     .now-card p{ font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:1.2rem; }
 
     /* contact */
@@ -335,13 +323,6 @@
       <span class="mono">2023 — 2026</span>
     </div>
 
-    <div class="filters reveal" role="group" aria-label="Filter projects">
-      <button class="filter" data-f="all" aria-pressed="true">All</button>
-      <button class="filter" data-f="unity" aria-pressed="false">Unity</button>
-      <button class="filter" data-f="unreal" aria-pressed="false">Unreal Engine</button>
-      <button class="filter" data-f="engine" aria-pressed="false">Custom engines</button>
-    </div>
-
     <div class="proj-block">
       <h3 class="proj-label reveal">Selected projects</h3>
       <div class="featured-grid row">
@@ -414,38 +395,42 @@
     <div class="proj-block">
       <h3 class="proj-label reveal">Other projects</h3>
       <div class="other-grid">
-      <a class="mini reveal" href="https://github.com/ivappetrova/ReflectingPheasant" target="_blank" rel="noopener">
+      <div class="mini reveal">
         <div class="mini-thumb"><img src="Images/ReflectingPheasant.png" alt="Reflecting Pheasant screenshot" loading="lazy" onerror="this.remove()"></div>
         <div class="mini-body">
-          <h4>Reflecting Pheasant<span class="arrow" aria-hidden="true">↗</span></h4>
+          <h4>Reflecting Pheasant</h4>
           <p>A Vulkan compute-shader raytracer scene where all movement and mirroring is done with Projective Geometric Algebra: translation and rotation motors, an orbiting pheasant, and its reflection via the sandwich product.</p>
           <div class="chips"><span class="chip mono">C++</span><span class="chip mono">Vulkan</span><span class="chip mono">GLSL</span></div>
+          <div class="mini-links"><a class="btn" href="https://github.com/ivappetrova/ReflectingPheasant" target="_blank" rel="noopener">Source</a></div>
         </div>
-      </a>
-      <a class="mini reveal" href="https://github.com/ivappetrova/LuaSnake" target="_blank" rel="noopener">
+      </div>
+      <div class="mini reveal">
         <div class="mini-thumb"><img src="Images/LuaSnake.png" alt="Lua Snake screenshot" loading="lazy" onerror="this.remove()"></div>
         <div class="mini-body">
-          <h4>Lua Snake<span class="arrow" aria-hidden="true">↗</span></h4>
+          <h4>Lua Snake</h4>
           <p>A Lua snake game running on Howest DAE's Win32 game engine, with the engine's drawing, input, and game loop functions exposed to Lua through Sol2 bindings.</p>
           <div class="chips"><span class="chip mono">Lua</span></div>
+          <div class="mini-links"><a class="btn" href="https://github.com/ivappetrova/LuaSnake" target="_blank" rel="noopener">Source</a></div>
         </div>
-      </a>
-      <a class="mini reveal" href="https://github.com/ivappetrova/Raytracer" target="_blank" rel="noopener">
+      </div>
+      <div class="mini reveal">
         <div class="mini-thumb"><img src="Images/Raytracer.png" alt="Raytracer screenshot" loading="lazy" onerror="this.remove()"></div>
         <div class="mini-body">
-          <h4>Raytracer<span class="arrow" aria-hidden="true">↗</span></h4>
+          <h4>Raytracer</h4>
           <p>A CPU raytracer built for my graphics programming course. It renders spheres, planes and triangle meshes with shadows, point and directional lights, and physically based Cook-Torrance materials, with a free-fly camera.</p>
           <div class="chips"><span class="chip mono">C++</span><span class="chip mono">SDL</span></div>
+          <div class="mini-links"><a class="btn" href="https://github.com/ivappetrova/Raytracer" target="_blank" rel="noopener">Source</a></div>
         </div>
-      </a>
-      <a class="mini reveal" href="https://github.com/ivappetrova/DualRasterizer" target="_blank" rel="noopener">
+      </div>
+      <div class="mini reveal">
         <div class="mini-thumb"><img src="Images/DualRasterizer.png" alt="Dual Rasterizer screenshot" loading="lazy" onerror="this.remove()"></div>
         <div class="mini-body">
-          <h4>Dual Rasterizer<span class="arrow" aria-hidden="true">↗</span></h4>
+          <h4>Dual Rasterizer</h4>
           <p>One renderer that draws the same scene with either my software rasterizer or DirectX 11, switchable live. Features normal mapping, Lambert and Phong shading, and an alpha-blended fire effect.</p>
           <div class="chips"><span class="chip mono">C++</span><span class="chip mono">DirectX 11</span><span class="chip mono">HLSL</span></div>
+          <div class="mini-links"><a class="btn" href="https://github.com/ivappetrova/DualRasterizer" target="_blank" rel="noopener">Source</a></div>
         </div>
-      </a>
+      </div>
       </div>
     </div>
   </div>
@@ -467,7 +452,7 @@
   <div class="wrap">
     <div class="section-head reveal"><h2>Currently working on</h2></div>
     <div class="now-grid">
-      <div class="now-card reveal"><span class="mono">Unity</span><p>Team project</p></div>
+      <div class="now-card reveal"><span class="mono">Unity</span><p>Team project</p><span class="client-tag mono">Client project</span></div>
       <div class="now-card reveal" style="--d:100ms"><span class="mono">Unreal Engine 5</span><p>Original game concept</p></div>
     </div>
   </div>
@@ -611,29 +596,6 @@
       var r = c.getBoundingClientRect();
       c.style.setProperty('--px', (e.clientX - r.left) + 'px');
       c.style.setProperty('--py', (e.clientY - r.top) + 'px');
-    });
-  });
-
-  /* filter */
-  $$('.filter').forEach(function(b){
-    b.addEventListener('click', function(){
-      $$('.filter').forEach(function(x){ x.setAttribute('aria-pressed', x === b); });
-      var f = b.dataset.f;
-      $$('.row').forEach(function(r){
-        var any = $$('.project', r).some(function(c){ return f === 'all' || c.dataset.cat === f; });
-        if(any){ r.hidden = false; }
-        else { setTimeout(function(){ r.hidden = true; }, reduce ? 0 : 250); }
-      });
-      cards.forEach(function(c){
-        var show = f === 'all' || c.dataset.cat === f;
-        if(show){
-          if(c.hidden){ c.hidden = false; c.classList.add('out'); requestAnimationFrame(function(){ requestAnimationFrame(function(){ c.classList.remove('out'); }); }); }
-        } else if(!c.hidden){
-          c.classList.add('out');
-          setTimeout(function(){ if(c.classList.contains('out')) c.hidden = true; }, reduce ? 0 : 250);
-        }
-        c.classList.add('in');
-      });
     });
   });
 
