@@ -1,646 +1,332 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Iva Petrova · Gameplay Programmer</title>
-  <meta name="description" content="Portfolio of Iva Petrova, gameplay programmer specializing in gameplay systems and game AI. Open for Q1 2027 internships.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500&display=swap" rel="stylesheet">
-  <style>
-    :root{
-      --bg:#0e0c16;
-      --bg-soft:#141122;
-      --card:#1a1630;
-      --text:#eceaf4;
-      --dim:#a29fb4;
-      --accent:#9d86d0;
-      --accent-hi:#c1aff2;
-      --line:#2a2442;
-      --ok:#7fd68a;
-      --mx:50%; --my:30%;
-    }
-    *{ box-sizing:border-box; margin:0; padding:0; }
-    html{ scroll-behavior:smooth; scroll-padding-top:96px; }
-    body{
-      background:var(--bg); color:var(--text);
-      font-family:'Inter',sans-serif; line-height:1.6;
-      -webkit-font-smoothing:antialiased; overflow-x:hidden;
-    }
-    h1,h2,h3,h4{ font-family:'Space Grotesk',sans-serif; font-weight:700; letter-spacing:-0.01em; }
-    .mono{ font-family:'IBM Plex Mono',monospace; font-size:0.8rem; }
-    a{ color:inherit; }
-    :focus-visible{ outline:2px solid var(--accent-hi); outline-offset:3px; border-radius:4px; }
-    .wrap{ max-width:1320px; margin:0 auto; padding:0 clamp(24px,6vw,96px); }
-
-    /* progress + nav */
-    .progress{ position:fixed; top:0; left:0; height:3px; width:0; z-index:30;
-      background:linear-gradient(90deg,var(--accent),var(--accent-hi)); }
-    nav{ position:sticky; top:0; z-index:20; padding:12px clamp(12px,3vw,32px); pointer-events:none; }
-    .nav-bar{
-      pointer-events:auto; max-width:1180px; margin:0 auto; height:56px; padding:0 14px 0 10px;
-      display:grid; grid-template-columns:1fr auto 1fr; align-items:center; gap:16px;
-      background:rgb(20 17 34 / .72); backdrop-filter:blur(14px) saturate(140%);
-      border:1px solid var(--line); border-radius:999px;
-      box-shadow:0 10px 30px rgb(0 0 0 / .35), inset 0 1px 0 rgb(255 255 255 / .05);
-    }
-    .nav-name{ display:inline-flex; align-items:center; gap:10px; justify-self:start; text-decoration:none;
-      font-family:'Space Grotesk',sans-serif; font-weight:700; }
-    .nav-mark{
-      width:36px; height:36px; border-radius:50%; display:grid; place-items:center;
-      background:linear-gradient(135deg,var(--accent),var(--accent-hi)); color:#120d22;
-      font-size:.8rem; letter-spacing:0; transition:transform .3s cubic-bezier(.2,.7,.2,1);
-    }
-    .nav-name:hover .nav-mark{ transform:rotate(-10deg) scale(1.08); }
-    .nav-links{ position:relative; display:flex; gap:2px; padding:4px; border-radius:999px;
-      background:rgb(255 255 255 / .03); border:1px solid var(--line); }
-    .nav-links a{
-      position:relative; z-index:1; text-decoration:none; color:var(--dim); font-size:.9rem;
-      padding:6px 18px; border-radius:999px; transition:color .2s;
-    }
-    .nav-links a:hover, .nav-links a.active{ color:var(--text); }
-    .nav-ind{
-      position:absolute; z-index:0; top:4px; bottom:4px; left:0; width:0; border-radius:999px; opacity:0;
-      background:var(--card); box-shadow:inset 0 0 0 1px var(--accent), 0 4px 14px rgb(157 134 208 / .2);
-      transition:transform .35s cubic-bezier(.2,.7,.2,1), width .35s cubic-bezier(.2,.7,.2,1), opacity .25s;
-    }
-    .nav-status{ justify-self:end; display:inline-flex; align-items:center; gap:8px; color:var(--dim);
-      border:1px solid var(--line); background:var(--bg-soft); border-radius:999px; padding:6px 14px; font-size:.75rem; }
-
-    /* hero */
-    .hero{ position:relative; display:flex; align-items:center; min-height:min(720px,calc(100vh - 80px)); padding:72px 0 88px; border-bottom:1px solid var(--line); overflow:hidden; }
-    .hero > .wrap{ width:100%; }
-    .hero::before{
-      content:""; position:absolute; inset:0; pointer-events:none;
-      background:radial-gradient(520px circle at var(--mx) var(--my), rgb(157 134 208 / .16), transparent 70%);
-    }
-        .pic-wrap{ flex:0 0 auto; width:clamp(200px,24vw,340px); perspective:900px; margin:14px 14px 0 0; }
-    .pic-tilt{ position:relative; transition:transform .15s ease-out; transform-style:preserve-3d; }
-    .pic-tilt::before{
-      content:""; position:absolute; inset:14px -14px -14px 14px; z-index:0;
-      border:1px solid var(--accent); border-radius:6px; opacity:.55;
-      transition:inset .3s, opacity .3s;
-    }
-    .pic-wrap:hover .pic-tilt::before{ inset:20px -20px -20px 20px; opacity:1; }
-    .hero-pic{
-      position:relative; z-index:1; width:100%; aspect-ratio:4/5;
-      object-fit:cover; object-position:center 30%; display:block; border-radius:6px;
-    }
-    .hero-text{ position:relative; max-width:900px; display:flex; flex-direction:column; }
-    .hero-name{ font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:clamp(1.5rem,2.6vw,2.1rem); }
-    .hero-tag{ color:var(--accent-hi); font-size:clamp(1rem,1.8vw,1.35rem); margin:4px 0 32px; min-height:1.6em; }
-    .caret{ display:inline-block; width:.55ch; height:1.1em; background:var(--accent-hi);
-      vertical-align:-.15em; margin-left:2px; animation:blink 1s steps(1) infinite; }
-    @keyframes blink{ 50%{ opacity:0; } }
-    .hero h1{ font-size:clamp(2rem,5vw,3.8rem); line-height:1.08; margin-bottom:8px; }
-    .hero h1 span{ display:block; }
-    .hero p{ max-width:54ch; color:var(--dim); margin-top:24px; }
-    .hero-actions{ margin-top:12px; padding-top:32px; display:flex; flex-wrap:wrap; gap:14px; align-items:center; }
-    .btn{
-      display:inline-block; text-decoration:none; font-weight:500; font-size:.95rem;
-      padding:12px 22px; border-radius:8px; border:1px solid var(--accent);
-      background:var(--accent); color:#120d22; transition:transform .2s, background .2s, box-shadow .2s;
-    }
-    .btn:hover{ background:var(--accent-hi); transform:translateY(-2px); box-shadow:0 8px 24px rgb(157 134 208 / .3); }
-    .btn:active{ transform:translateY(0) scale(.97); }
-    .btn.ghost{ background:transparent; color:var(--text); }
-    .btn.ghost:hover{ background:var(--card); box-shadow:none; }
-    .status-badge{
-      display:inline-flex; align-items:center; gap:10px;
-      border:1px solid var(--line); background:var(--bg-soft);
-      border-radius:999px; padding:10px 18px;
-    }
-    .status-dot{ width:8px; height:8px; border-radius:50%; background:var(--ok); animation:pulse 2s infinite; }
-    @keyframes pulse{
-      0%{ box-shadow:0 0 0 0 rgb(127 214 138 / .45); }
-      70%,100%{ box-shadow:0 0 0 9px rgb(127 214 138 / 0); }
-    }
-
-    /* page-load sequence (hero only) */
-    .intro{ opacity:0; transform:translateY(18px); animation:rise .7s cubic-bezier(.2,.7,.2,1) forwards; animation-delay:calc(var(--i) * 110ms + 100ms); }
-    @keyframes rise{ to{ opacity:1; transform:none; } }
-
-    /* sections */
-    .section{ padding:96px 0; border-bottom:1px solid var(--line); }
-    .section-head{ display:flex; justify-content:space-between; align-items:baseline; gap:16px; flex-wrap:wrap; margin-bottom:32px; }
-    .section-head h2{ font-size:clamp(1.6rem,3vw,2.1rem); }
-    .section-head .mono{ color:var(--dim); }
-
-    /* projects */
-    .projects-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:28px; }
-    .project{
-      position:relative; display:flex; flex-direction:column; text-align:left;
-      background:var(--card); border:1px solid var(--line); border-radius:12px; overflow:hidden;
-      cursor:pointer; font:inherit; color:inherit;
-      transition:transform .3s cubic-bezier(.2,.7,.2,1), border-color .3s, opacity .25s, box-shadow .3s;
-    }
-    .project::after{
-      content:""; position:absolute; inset:0; pointer-events:none; opacity:0; transition:opacity .3s;
-      background:radial-gradient(260px circle at var(--px,50%) var(--py,50%), rgb(193 175 242 / .14), transparent 70%);
-    }
-    .project:hover{ transform:translateY(-6px); border-color:var(--accent); box-shadow:0 18px 40px rgb(0 0 0 / .4); }
-    .project:hover::after{ opacity:1; }
-    .project.out{ opacity:0; transform:scale(.95); }
-    .project[hidden]{ display:none; }
-    .thumb{ overflow:hidden; aspect-ratio:16/10; background:#120f20; }
-    .project-thumb{ width:100%; height:100%; object-fit:cover; display:block; transition:transform .5s cubic-bezier(.2,.7,.2,1); }
-    .project:hover .project-thumb{ transform:scale(1.06); }
-    .project-body{ padding:22px 22px 24px; display:flex; flex-direction:column; flex:1; }
-    .engine-tag{ color:var(--accent-hi); margin-bottom:6px; }
-    .project-body h3{ font-size:1.25rem; margin-bottom:10px; }
-    .project-body p{ color:var(--dim); font-size:.93rem; margin-bottom:16px;
-      display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
-    .chips{ display:flex; gap:8px; flex-wrap:wrap; margin-top:auto; }
-    .chip{ border:1px solid var(--line); color:var(--dim); padding:3px 10px; border-radius:6px; background:var(--bg-soft); }
-    .more{ margin-top:16px; font-size:.85rem; color:var(--accent-hi); }
-    .more::after{ content:" +"; display:inline-block; transition:transform .3s; }
-    .project:hover .more::after{ transform:rotate(90deg); }
-    .project-links{ display:none; }
-
-    .proj-label{ display:flex; align-items:baseline; gap:14px; margin-bottom:22px; font-size:1.15rem; }
-    .proj-label .mono{ color:var(--dim); }
-    .proj-block + .proj-block{ margin-top:72px; }
-    .featured-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:28px; margin-bottom:28px; }
-    .row[hidden]{ display:none; }
-    .project.big .thumb{ aspect-ratio:16/9; }
-    .project.big .project-body{ padding:28px 32px 32px; }
-    .project.big h3{ font-size:1.8rem; margin-bottom:12px; }
-    .project.big p{ font-size:1rem; -webkit-line-clamp:4; }
-    .other-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:24px; }
-    .mini{
-      display:grid; grid-template-columns:minmax(150px,42%) 1fr; text-decoration:none; color:inherit;
-      background:var(--bg-soft); border:1px solid var(--line); border-radius:12px; overflow:hidden;
-      transition:transform .3s cubic-bezier(.2,.7,.2,1), border-color .3s, background .3s, box-shadow .3s;
-    }
-    .mini-links{ display:flex; gap:12px; margin-top:10px; }
-    .mini-thumb{ position:relative; overflow:hidden; min-height:150px;
-      background:linear-gradient(135deg,#1d1838,#120f20); border-right:1px solid var(--line); }
-    .mini-thumb img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; transition:transform .5s cubic-bezier(.2,.7,.2,1); }
-    .mini-body{ display:flex; flex-direction:column; gap:8px; padding:20px 22px; min-width:0; }
-    .mini h4{ font-size:1.1rem; display:flex; justify-content:space-between; gap:8px; }
-    .mini p{ color:var(--dim); font-size:.9rem; }
-    .mini .chips{ margin-top:auto; padding-top:6px; }
-
-    /* modal */
-    dialog{
-      margin:auto; width:min(720px,92vw); max-height:90vh; overflow:auto;
-      background:var(--card); color:var(--text); border:1px solid var(--accent); border-radius:16px; padding:0;
-    }
-    dialog::backdrop{ background:rgb(8 6 16 / .75); backdrop-filter:blur(6px); }
-    dialog[open]{ animation:pop .3s cubic-bezier(.2,.7,.2,1); }
-    @keyframes pop{ from{ opacity:0; transform:translateY(20px) scale(.97); } }
-    .m-img{ width:100%; aspect-ratio:16/9; object-fit:cover; display:block; }
-    .m-body{ padding:28px 32px 32px; }
-    .m-body h3{ font-size:1.7rem; margin:4px 0 14px; }
-    .m-body p{ color:var(--dim); margin-bottom:20px; max-width:62ch; }
-    .m-body .chips{ margin:0 0 24px; }
-    .m-links{ display:flex; gap:12px; flex-wrap:wrap; }
-    .close{
-      position:absolute; top:14px; right:14px; width:38px; height:38px; border-radius:50%;
-      background:rgb(14 12 22 / .8); color:var(--text); border:1px solid var(--line);
-      font-size:1.2rem; cursor:pointer; transition:background .2s, transform .2s;
-    }
-    .close:hover{ background:var(--accent); color:#120d22; transform:rotate(90deg); }
-
-    /* about */
-    .about-intro{ display:flex; align-items:center; gap:clamp(28px,5vw,72px); margin-bottom:56px; }
-    .about-text{ flex:1; min-width:0; }
-    .skills-row{ display:grid; grid-template-columns:1fr; gap:20px; }
-    .skills-grid{ display:grid; grid-template-columns:1fr 1fr; grid-template-rows:auto auto; grid-auto-flow:column; gap:24px 28px; }
-    .skills-grid .skill-group{ margin-bottom:0; }
-    .about-text p{ color:var(--dim); margin-bottom:18px; max-width:62ch; }
-        .skills{ background:var(--bg-soft); border:1px solid var(--line); border-radius:12px; padding:26px 28px; }
-    .skills-title{ font-size:1.05rem; margin-bottom:20px; }
-    .skill-group{ margin-bottom:20px; }
-    .skill-group:last-child{ margin-bottom:0; }
-    .skill-group h4{ font-size:.95rem; color:var(--dim); font-weight:500; margin-bottom:8px; }
-    .tags{ display:flex; flex-wrap:wrap; gap:8px; }
-    .tag{
-      font-size:.9rem; padding:5px 13px; border-radius:999px; border:1px solid var(--line); background:var(--card);
-      transition:transform .2s, border-color .2s, color .2s; cursor:default;
-    }
-    .tag:hover{ transform:translateY(-3px); border-color:var(--accent); color:var(--accent-hi); }
-    .now{ list-style:none; }
-    .now li{ position:relative; padding-left:20px; margin-bottom:4px; }
-    .now li::before{ content:""; position:absolute; left:0; top:.6em; width:7px; height:7px; border-radius:50%; background:var(--accent); animation:pulse2 2.4s infinite; }
-    @keyframes pulse2{ 0%{ box-shadow:0 0 0 0 rgb(157 134 208 / .5); } 70%,100%{ box-shadow:0 0 0 8px rgb(157 134 208 / 0); } }
-
-    .now-section{ padding:64px 0; }
-    .now-section .section-head{ margin-bottom:24px; }
-    .now-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:20px; }
-    .now-card{ position:relative; background:var(--bg-soft); border:1px solid var(--line); border-radius:12px; padding:20px 26px 20px 50px; }
-    .now-card::before{ content:""; position:absolute; left:26px; top:27px; width:8px; height:8px; border-radius:50%; background:var(--accent); animation:pulse2 2.4s infinite; }
-    .now-card .mono{ color:var(--accent-hi); }
-    .client-tag{ display:inline-block; margin-top:10px; font-size:.72rem; letter-spacing:.06em; text-transform:uppercase; color:var(--accent-hi); border:1px solid var(--accent); border-radius:999px; padding:3px 10px; }
-    .now-card p{ font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:1.2rem; }
-
-    /* contact */
-    .contact{ padding:96px 0 120px; }
-    .contact h2{ font-size:clamp(1.8rem,3.5vw,2.6rem); margin-bottom:12px; }
-    .contact p{ color:var(--dim); }
-    .contact-links{ display:flex; gap:14px; flex-wrap:wrap; margin-top:36px; }
-    .contact-links a{
-      display:inline-flex; align-items:center; gap:10px; text-decoration:none; font-size:.95rem;
-      padding:12px 20px; border:1px solid var(--line); border-radius:10px; background:var(--bg-soft);
-      transition:transform .2s, border-color .2s, background .2s;
-    }
-    .contact-links a:hover{ transform:translateY(-3px); border-color:var(--accent); background:var(--card); }
-    .contact-icon{ width:18px; height:18px; object-fit:contain; }
-    .site-foot{ border-top:1px solid var(--line); padding:24px 0; color:var(--dim); font-size:.85rem; }
-
-    /* scroll reveal (below the fold) */
-    .reveal{ opacity:0; transform:translateY(24px); transition:opacity .6s ease, transform .6s cubic-bezier(.2,.7,.2,1); transition-delay:var(--d,0ms); }
-    .reveal.in{ opacity:1; transform:none; }
-
-    @media (max-width:1000px){ .projects-grid{ grid-template-columns:repeat(2,1fr); } .other-grid{ grid-template-columns:repeat(2,1fr); } }
-    @media (max-width:900px){ .nav-bar{ grid-template-columns:1fr auto; } .nav-status{ display:none; } }
-    @media (max-width:560px){ .nav-text{ display:none; } }
-    @media (max-width:720px){ .mini{ grid-template-columns:1fr; } .mini-thumb{ aspect-ratio:16/9; min-height:0; border-right:0; border-bottom:1px solid var(--line); } }
-    @media (max-width:720px){
-      .projects-grid,.featured-grid,.other-grid,.skills-grid,.now-grid{ grid-template-columns:1fr; }
-      .skills-grid{ grid-template-rows:none; grid-auto-flow:row; }
-      .about-intro{ flex-direction:column; align-items:flex-start; }
-      .pic-wrap{ width:60%; }
-      .nav-links a{ padding:6px 12px; font-size:.85rem; }
-      .m-body{ padding:22px; }
-    }
-    @media (prefers-reduced-motion:reduce){
-      *,*::before,*::after{ animation:none !important; transition:none !important; }
-      .intro,.reveal{ opacity:1; transform:none; }
-      html{ scroll-behavior:auto; }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Iva Petrova, Gameplay Programmer</title>
+<meta name="description" content="Portfolio of Iva Petrova, gameplay programmer specializing in player abilities, enemy AI and gameplay systems. Open for Q1 2027 internships.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Crect x='3' y='5' width='42' height='40' rx='14' fill='%235b4a8c'/%3E%3Crect x='3' y='2' width='42' height='40' rx='14' fill='%23b9a6ee'/%3E%3Ctext x='24' y='30' text-anchor='middle' font-family='Arial,sans-serif' font-size='21' font-weight='800' fill='%231a1030'%3EIP%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0f0a1d;--pn:#161029;--card:#1d1536;--ln:#2d2450;--ac:#9d86d0;--hi:#c1aff2;--tx:#eceaf4;--dim:#aaa6c0;--ok:#7fd68a;--hd:'Chakra Petch',sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:76px}
+body{background:var(--bg);color:var(--tx);font:400 1.02rem/1.65 'Inter',sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;z-index:-1;background:radial-gradient(1000px circle at 25% 12%,rgb(140 90 235/.32),transparent 60%),radial-gradient(600px circle at 85% 8%,rgb(190 120 255/.14),transparent 60%),radial-gradient(700px circle at 100% 70%,rgb(100 70 180/.12),transparent 60%)}
+a{color:inherit}button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--hi);outline-offset:3px;border-radius:6px}
+.wrap{max-width:1240px;margin:auto;padding:0 clamp(18px,4vw,48px)}
+h1,h2,h3,h4{font-family:var(--hd);line-height:1.1}
+/* bar */
+.bar{position:sticky;top:0;z-index:20;background:rgb(15 10 29/.82);backdrop-filter:blur(12px);border-bottom:1px solid var(--ln)}
+.bar-in{display:flex;align-items:center;gap:28px;height:64px}
+.logo{display:inline-flex;align-items:center;gap:10px;text-decoration:none;font:700 1.1rem var(--hd)}
+.logo svg{width:36px;height:36px}
+.nav{display:flex;gap:6px;margin-left:auto}
+.nav a{text-decoration:none;color:var(--dim);padding:6px 14px;border-radius:8px;transition:color .2s,background .2s}
+.nav a:hover,.nav a.on{color:var(--tx);background:var(--card)}
+.open{display:inline-flex;align-items:center;gap:8px;color:var(--dim);font-size:.85rem}
+.open i{width:8px;height:8px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 4px rgb(127 214 138/.18)}
+.btn{display:inline-block;font:600 .98rem 'Inter',sans-serif;padding:11px 24px;border-radius:10px;border:2px solid var(--ac);background:var(--ac);color:#150f26;text-decoration:none;transition:background .2s,transform .2s}
+.btn:hover{background:var(--hi);border-color:var(--hi);transform:translateY(-2px)}
+.btn.g{background:transparent;color:var(--tx)}.btn.g:hover{background:var(--card)}
+/* hero */
+.hero{padding:clamp(28px,4vw,48px) 0 28px}
+.hero-in{display:grid;grid-template-columns:1fr auto;gap:32px;align-items:end}
+.who{color:var(--hi);font:600 1rem var(--hd);margin-bottom:10px}
+h1{font-size:clamp(2rem,4.3vw,3.5rem);font-weight:600;letter-spacing:-.01em;line-height:1.05}h1 span{display:block}
+.lead{color:var(--dim);max-width:56ch;margin-top:14px}
+.acts{display:flex;gap:12px;flex-wrap:wrap}
+/* reel */
+.reel{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:28px;padding-bottom:40px;align-items:start}
+.frame{position:relative;padding:2px;border-radius:16px;overflow:hidden;background:var(--ln);box-shadow:0 24px 70px rgb(90 50 200/.4)}.frame::before{content:"";position:absolute;inset:-100%;background:conic-gradient(from 0deg,transparent 0 62%,var(--ac) 80%,#e6dcff 90%,transparent 100%);animation:spin 5s linear infinite}@keyframes spin{to{transform:rotate(1turn)}}
+.screen{position:relative;z-index:1;aspect-ratio:16/9;background:#000;border-radius:14px;overflow:hidden}
+.screen img,.screen video,.screen iframe{width:100%;height:100%;object-fit:cover;display:block;border:0}
+.play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:14px;border:0;background:linear-gradient(transparent 40%,rgb(15 10 29/.7))}
+.play b{display:grid;place-items:center;width:76px;height:76px;border-radius:50%;background:var(--ac);color:#150f26;transition:transform .25s,background .2s;animation:ring 2.4s infinite}
+.play b svg{width:30px;height:30px;margin-left:4px}
+.play:hover b{transform:scale(1.1);background:var(--hi)}
+.play span{font:600 1.1rem var(--hd);text-shadow:0 2px 10px #000}
+@keyframes ring{0%{box-shadow:0 0 0 0 rgb(193 175 242/.5)}70%,100%{box-shadow:0 0 0 18px rgb(193 175 242/0)}}
+.miss{position:absolute;left:14px;bottom:14px;right:14px;background:rgb(15 10 29/.9);border:1px solid var(--ln);border-radius:8px;padding:8px 14px;font-size:.9rem;color:var(--dim)}
+.slots{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:14px}
+.slot{position:relative;text-align:left;background:var(--pn);border:1px solid var(--ln);border-radius:12px;padding:6px 6px 8px;transition:border-color .2s,background .2s,transform .2s;animation:up .5s both}
+.slot:nth-child(2){animation-delay:.07s}.slot:nth-child(3){animation-delay:.14s}.slot:nth-child(4){animation-delay:.21s}.slot:nth-child(5){animation-delay:.28s}
+@keyframes up{from{opacity:0;transform:translateY(14px)}}
+.slot:hover{border-color:var(--ac);transform:translateY(-3px)}
+.slot[aria-pressed=true]{border-color:var(--hi);background:var(--card);box-shadow:0 0 0 1px var(--hi)}
+.slot img{width:100%;aspect-ratio:16/10;object-fit:cover;border-radius:8px;display:block;background:#120d22}
+.slot b{display:block;font:600 .88rem/1.25 var(--hd);margin:7px 4px 0}
+.slot kbd{position:absolute;top:12px;left:12px;font:600 .72rem var(--hd);background:rgb(15 10 29/.85);border:1px solid var(--ac);border-radius:5px;padding:0 6px}
+.info{background:var(--pn);border:1px solid var(--ln);border-radius:14px;padding:24px;display:flex;flex-direction:column;gap:12px;position:sticky;top:84px}
+.disc{display:flex;gap:6px;flex-wrap:wrap}
+.disc span{padding:1px 10px;border-radius:6px;background:rgb(157 134 208/.16);border:1px solid var(--ac);color:var(--hi);font:600 .8rem var(--hd)}
+.info h3{font-size:1.8rem}.eng{color:var(--hi);font-size:.9rem}
+.tag{margin-left:8px;border:1px solid var(--ac);border-radius:6px;padding:0 8px;font-size:.75rem;color:var(--tx)}
+.info p{color:var(--dim);font-size:.97rem}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{padding:1px 10px;border-radius:6px;border:1px solid var(--ln);background:var(--card);color:var(--dim);font-size:.8rem}
+.lk{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}.lk .btn{padding:8px 18px;font-size:.92rem}
+/* dev log */
+.devlog{margin-top:28px}.devlog[hidden]{display:none}
+.dl{background:linear-gradient(180deg,var(--pn),#120c24);border:1px solid var(--ln);border-radius:16px;padding:28px 32px 32px}
+.dl-h{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 16px;margin-bottom:26px}
+.dl-h small{color:var(--hi);font:600 .95rem var(--hd)}.dl-h h3{font-size:1.6rem}
+.dl-body{border-left:3px solid var(--ac);padding-left:22px}.dl-body p{color:var(--dim);max-width:72ch}.dl-body p+p{margin-top:12px}
+.dl-code{margin-top:22px;border:1px solid var(--ln);border-radius:10px;background:#0b0716;overflow:hidden}.dl-code[hidden]{display:none}
+.dl-code span{display:block;padding:6px 14px;border-bottom:1px solid var(--ln);color:var(--dim);font-size:.8rem}
+.dl-code pre{padding:14px;overflow-x:auto;font:.84rem/1.55 ui-monospace,Consolas,monospace;color:var(--hi)}
+.pl{margin:22px 0 8px;color:var(--dim);font:600 .9rem var(--hd)}
+.slots2{display:flex;flex-wrap:wrap;gap:8px}
+.s2{display:flex;align-items:center;gap:10px;padding:5px 14px 5px 5px;animation:none;text-align:left}
+.s2 img{width:54px;flex:none;aspect-ratio:16/10;object-fit:cover;border-radius:6px}
+.s2 b{margin:0;font:600 .9rem var(--hd)}
+.det .dsec+.dsec{margin-top:22px;padding-top:22px;border-top:1px solid var(--ln)}
+.det h4{font:600 .95rem var(--hd);color:var(--hi);margin-bottom:8px}
+.det ul{list-style:none;color:var(--dim);max-width:72ch}.det li{position:relative;padding-left:20px;margin-bottom:4px}
+.det li::before{content:"";position:absolute;left:0;top:.65em;width:7px;height:7px;border-radius:2px;background:var(--ac)}
+.det .pt{font:600 1.1rem var(--hd);margin-bottom:6px}
+.det p{color:var(--dim);max-width:72ch}.det p+p{margin-top:10px}
+.dl .dl-name{color:var(--hi);font:600 .95rem var(--hd);margin-bottom:14px}
+.rows .row{grid-template-columns:230px 1fr}.rows .row .det{margin-top:16px;padding-top:16px;border-top:1px solid var(--ln)}
+/* sections */
+.sec{padding:84px 0;border-top:1px solid var(--ln)}
+h2{font-size:clamp(1.9rem,3.4vw,2.6rem);margin-bottom:12px}
+.sub{color:var(--dim);max-width:60ch;margin-bottom:40px}
+.cols{display:grid;grid-template-columns:repeat(3,1fr);gap:32px}
+.col{border-top:3px solid var(--ac);padding-top:18px}
+.col h3{font-size:1.5rem;margin-bottom:8px}.col>p{color:var(--dim);margin-bottom:18px}
+.pj{display:block;width:100%;text-align:left;text-decoration:none;background:var(--pn);border:1px solid var(--ln);border-radius:10px;padding:12px 16px;margin-bottom:10px;transition:border-color .2s,transform .2s}
+.pj:hover{border-color:var(--ac);transform:translateX(4px)}
+.pj b{font:600 1rem var(--hd)}.pj em{font-style:normal;margin-left:8px;font-size:.75rem;color:#150f26;background:var(--ac);border-radius:5px;padding:0 6px}
+.pj span{display:block;color:var(--dim);font-size:.9rem;line-height:1.5;margin-top:2px}
+/* more work */
+.mh{font:600 1.15rem var(--hd);color:var(--hi);margin:36px 0 14px}.mh:first-of-type{margin-top:0}
+.rows{display:grid;grid-template-columns:1fr;gap:20px}
+.row{display:grid;grid-template-columns:150px 1fr;gap:16px;background:var(--pn);border:1px solid var(--ln);border-radius:12px;padding:12px}
+.row img{width:100%;aspect-ratio:16/10;object-fit:cover;border-radius:8px;background:#120d22}
+.row h4{font-size:1.1rem}.row small{color:var(--hi)}.row p{color:var(--dim);font-size:.88rem;line-height:1.5;margin:6px 0 8px}
+.row .chips{margin-bottom:8px}.row a,.row button{color:var(--hi);font-weight:500;font-size:.9rem;background:none;border:0;margin-right:16px;text-decoration:underline;text-underline-offset:3px}
+.prog{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:24px}
+.prog div{padding:16px 22px;border:2px dashed var(--ln);border-radius:12px}
+.prog{align-items:start}.prog p{color:var(--dim);margin-top:8px;font-size:.95rem}.prog small{display:block;color:var(--hi)}.prog b{font:600 1.15rem var(--hd)}.prog u{margin-left:10px;text-decoration:none;color:var(--hi);font-size:.75rem;border:1px solid var(--ac);border-radius:6px;padding:1px 8px}
+/* about */
+.ab{display:grid;grid-template-columns:280px 1fr;gap:48px;align-items:start}
+.card{background:var(--pn);border:1px solid var(--ln);border-radius:14px;padding:12px}
+.card img{width:100%;aspect-ratio:4/5;object-fit:cover;object-position:center 30%;border-radius:10px;display:block;margin-bottom:6px}
+.st{display:flex;justify-content:space-between;gap:12px;padding:8px 6px;border-bottom:1px dashed var(--ln)}.st:last-child{border:0}.st span{color:var(--dim)}.st b{text-align:right;font-weight:500}
+.bio p{color:var(--dim);margin-bottom:16px;max-width:64ch}
+.load{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:28px}
+.load h4{font-size:1rem;color:var(--hi);margin-bottom:8px}
+.tags{display:flex;flex-wrap:wrap;gap:8px}.tags span{padding:3px 12px;border-radius:6px;border:1px solid var(--ln);background:var(--card)}.tags .hot{border-color:var(--ac);background:rgb(157 134 208/.14)}
+.ct{padding:88px 0 104px;border-top:1px solid var(--ln)}
+.ct p{color:var(--dim)}
+.cl{display:flex;gap:12px;flex-wrap:wrap;margin-top:30px}
+.cl a{display:inline-flex;align-items:center;gap:10px;text-decoration:none;padding:11px 20px;background:var(--pn);border:1px solid var(--ln);border-radius:10px;transition:border-color .2s,transform .2s}
+.cl a:hover{border-color:var(--ac);transform:translateY(-3px)}.cl img{width:18px;height:18px;object-fit:contain}
+.foot{border-top:1px solid var(--ln);padding:22px 0;color:var(--dim);font-size:.9rem}
+@media(max-width:1000px){.dl{padding:22px}.hero-in{grid-template-columns:1fr}.hero-in,.reel,.ab,.cols,.rows,.prog{grid-template-columns:1fr}.info{position:static}.open{display:none}.card{max-width:300px}}
+@media(max-width:640px){.slots{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:6px}.slot{flex:0 0 140px;scroll-snap-align:start}.logo span{display:none}.rows .row{grid-template-columns:1fr}.load{grid-template-columns:1fr}.nav a{padding:6px 9px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important}html{scroll-behavior:auto}}
+</style>
 </head>
 <body>
-<div class="progress" id="progress"></div>
+<header class="bar"><div class="wrap bar-in">
+  <a class="logo" href="#top" aria-label="Iva Petrova, back to top">
+    <svg viewBox="0 0 48 48" aria-hidden="true"><defs><linearGradient id="pg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e0d5ff"/><stop offset="1" stop-color="#9d86d0"/></linearGradient></defs><rect x="3" y="5" width="42" height="40" rx="14" fill="#5b4a8c"/><rect x="3" y="2" width="42" height="40" rx="14" fill="url(#pg)"/><text x="24" y="30" text-anchor="middle" font-family="'Chakra Petch',Arial,sans-serif" font-size="21" font-weight="700" fill="#1a1030">IP</text></svg>
+    <span>Iva Petrova</span>
+  </a>
+  <nav class="nav" aria-label="Main"><a href="#reel">Projects</a><a href="#about">About</a><a href="#contact">Contact</a></nav>
+  <span class="open"><i></i>Open for Q1 2027</span>
+</div></header>
 
-<nav>
-  <div class="nav-bar">
-    <a class="nav-name" href="#top" aria-label="Iva Petrova, back to top">
-      <span class="nav-mark" aria-hidden="true">IP</span>
-      <span class="nav-text">Iva Petrova</span>
-    </a>
-    <div class="nav-links">
-      <span class="nav-ind" id="nav-ind" aria-hidden="true"></span>
-      <a href="#work">Work</a>
-      <a href="#about">About</a>
-      <a href="#contact">Contact</a>
-    </div>
-    <span class="nav-status mono"><span class="status-dot"></span>Open for Q1 2027</span>
+<main>
+<section class="hero" id="top"><div class="wrap hero-in">
+  <div>
+    <p class="who">Iva Petrova, gameplay programmer</p>
+    <h1><span>I work under the hood,</span><span>and make the game feel good.</span></h1>
+    <p class="lead">Player abilities, enemy AI and the gameplay systems that tie them together. Pick a project and watch it run.</p>
   </div>
-</nav>
+  <div class="acts"><a class="btn" href="#contact">Get in touch</a></div>
+</div></section>
 
-<header class="hero" id="top">
-  <div class="wrap">
-      <div class="hero-text">
-        <div class="hero-name intro" style="--i:0">Iva Petrova</div>
-        <span class="hero-tag mono intro" style="--i:1"><span id="role">gameplay programmer</span><span class="caret" aria-hidden="true"></span></span>
-        <h1 class="intro" style="--i:2">
-          <span>I work under the hood,</span>
-          <span>and make the game feel good.</span>
-        </h1>
-        <p class="intro" style="--i:3">
-          From the first input to the final interaction, I build the systems that bring gameplay to life.
-          My work spans movement, combat, abilities, AI, interaction, and the underlying systems that connect them all together.
-        </p>
-        <div class="hero-actions intro" style="--i:4">
-          <a class="btn" href="#work">View my work</a>
-          <a class="btn ghost" href="#contact">Get in touch</a>
-          <div class="status-badge mono">
-            <span class="status-dot"></span>
-            <span>Open for Q1 2027 internships</span>
-          </div>
-        </div>
-      </div>
+<section class="wrap reel" id="reel" aria-label="Gameplay reel">
+  <div>
+    <div class="frame"><div class="screen" id="screen"></div></div>
+    <div class="slots" id="slots" role="group" aria-label="Choose a project. Keys 1 to 5 also work."></div>
+    <div class="devlog dl" id="detail" aria-label="Project details"></div>
   </div>
-</header>
-
-<section class="section" id="work">
-  <div class="wrap">
-    <div class="section-head reveal">
-      <h2>Work</h2>
-      <span class="mono">2023 — 2026</span>
-    </div>
-
-    <div class="proj-block">
-      <h3 class="proj-label reveal">Selected projects</h3>
-      <div class="featured-grid row">
-
-      <button class="project big reveal" data-cat="unity" style="--d:0ms">
-        <div class="thumb"><img class="project-thumb" src="Images/PieRats.png" alt="PieRats screenshot"></div>
-        <div class="project-body">
-          <span class="engine-tag mono">Unity</span>
-          <h3>PieRats</h3>
-          <p>Using C#, I programmed the behavior of all environmental hazards and their interactions with the player, built the in-game HUD, and developed the backend for several menus and UI.</p>
-          <div class="chips"><span class="chip mono">C#</span></div>
-          <span class="more">Details</span>
-          <div class="project-links"><a href="https://franciszekrakowiecki.itch.io/pierats">Itch.io page</a></div>
-        </div>
-      </button>
-
-      <button class="project big reveal" data-cat="engine" style="--d:80ms">
-        <div class="thumb"><img class="project-thumb" src="Images/BubbleEngine.png" alt="BubbleEngine screenshot"></div>
-        <div class="project-body">
-          <span class="engine-tag mono">Custom Engine</span>
-          <h3>BubbleEngine</h3>
-          <p>A 2D game engine built in C++ for a university project, extending the Minigin starter framework with systems like components, commands, and state machines. I used it to recreate the retro platformer Bubble Bobble.</p>
-          <div class="chips"><span class="chip mono">C++</span><span class="chip mono">OpenGL</span></div>
-          <span class="more">Details</span>
-          <div class="project-links"><a href="https://github.com/ivappetrova/BubbleEngine">Source</a></div>
-        </div>
-      </button>
-
-      </div>
-      <div class="projects-grid row" id="grid">
-
-      <button class="project reveal" data-cat="unity" style="--d:0ms">
-        <div class="thumb"><img class="project-thumb" src="Images/Lorchester.png" alt="Lorchester screenshot"></div>
-        <div class="project-body">
-          <span class="engine-tag mono">Unity</span>
-          <h3>Lorchester</h3>
-          <p>A 3D side-scrolling platformer prototype built in Unity for a university game development course. You switch between two characters with different skills to solve puzzles, fight enemies, and find the key that unlocks each floor.</p>
-          <div class="chips"><span class="chip mono">C#</span></div>
-          <span class="more">Details</span>
-          <div class="project-links"><a href="https://github.com/ivappetrova/Lorchester">Source</a></div>
-        </div>
-      </button>
-
-      <button class="project reveal" data-cat="unreal" style="--d:80ms">
-        <div class="thumb"><img class="project-thumb" src="Images/Scarex.png" alt="Scarex screenshot"></div>
-        <div class="project-body">
-          <span class="engine-tag mono">Unreal Engine</span>
-          <h3>Scarex</h3>
-          <p>A third-person horror chase game prototype built in Unreal Engine 5.4 for a university project. Trapped in a lab after an experiment goes wrong, the player scavenges for gadgets to unlock the emergency exit while an enemy stalks you.</p>
-          <div class="chips"><span class="chip mono">Blueprints</span></div>
-          <span class="more">Details</span>
-          <div class="project-links"><a href="https://github.com/ivappetrova/Scarex">Source</a></div>
-        </div>
-      </button>
-
-      <button class="project reveal" data-cat="engine" style="--d:160ms">
-        <div class="thumb"><img class="project-thumb" src="Images/GhostsNGoblins.png" alt="GhostNGoblins screenshot"></div>
-        <div class="project-body">
-          <span class="engine-tag mono">Howest DAE's Engine</span>
-          <h3>GhostNGoblins</h3>
-          <p>My first game development project, recreating the core gameplay and mechanics of the 2D retro classic Ghosts 'n Goblins using C++, SDL, and Howest DAE's custom game engine.</p>
-          <div class="chips"><span class="chip mono">C++</span></div>
-          <span class="more">Details</span>
-          <div class="project-links"><a href="https://github.com/ivappetrova/GhostsNGoblins">Source</a><a href="https://www.youtube.com/watch?v=8V2gZA79Yl0">Video</a></div>
-        </div>
-      </button>
-      </div>
-    </div>
-
-    <div class="proj-block">
-      <h3 class="proj-label reveal">Other projects</h3>
-      <div class="other-grid">
-      <div class="mini reveal">
-        <div class="mini-thumb"><img src="Images/TheShelterPrototype.png" alt="The Shelter Prototype screenshot" loading="lazy" onerror="this.remove()"></div>
-        <div class="mini-body">
-          <h4>The Shelter Prototype</h4>
-          <p>A team prototype of a multiplayer shelter-building survival game. I built the disaster manager and two disasters, and used Mirror Networking to make it playable as local multiplayer over the same Wi-Fi.</p>
-          <div class="chips"><span class="chip mono">C#</span><span class="chip mono">Unity</span><span class="chip mono">Mirror</span></div>
-          <div class="mini-links"><a class="btn" href="https://github.com/ivappetrova/TheShelterPrototype" target="_blank" rel="noopener">Source</a></div>
-        </div>
-      </div>
-      <div class="mini reveal">
-        <div class="mini-thumb"><img src="Images/ZombieGame.png" alt="Zombie Game screenshot" loading="lazy" onerror="this.remove()"></div>
-        <div class="mini-body">
-          <h4>Zombie Game</h4>
-          <p>An AI agent built for my Game AI exam that survives as long as possible against zombies. A priority-based decision tree handles looting, healing, fleeing and fighting, with blended steering and house-by-house exploration.</p>
-          <div class="chips"><span class="chip mono">C++</span><span class="chip mono">Unreal Engine</span><span class="chip mono">Behavior Trees</span></div>
-          <div class="mini-links"><a class="btn" href="https://github.com/ivappetrova/ZombieGame" target="_blank" rel="noopener">Source</a></div>
-        </div>
-      </div>
-      <div class="mini reveal">
-        <div class="mini-thumb"><img src="Images/ReflectingPheasant.png" alt="Reflecting Pheasant screenshot" loading="lazy" onerror="this.remove()"></div>
-        <div class="mini-body">
-          <h4>Reflecting Pheasant</h4>
-          <p>A Vulkan compute-shader raytracer scene where all movement and mirroring is done with Projective Geometric Algebra: translation and rotation motors, an orbiting pheasant, and its reflection via the sandwich product.</p>
-          <div class="chips"><span class="chip mono">C++</span><span class="chip mono">Vulkan</span><span class="chip mono">GLSL</span></div>
-          <div class="mini-links"><a class="btn" href="https://github.com/ivappetrova/ReflectingPheasant" target="_blank" rel="noopener">Source</a></div>
-        </div>
-      </div>
-      <div class="mini reveal">
-        <div class="mini-thumb"><img src="Images/LuaSnake.png" alt="Lua Snake screenshot" loading="lazy" onerror="this.remove()"></div>
-        <div class="mini-body">
-          <h4>Lua Snake</h4>
-          <p>A Lua snake game running on Howest DAE's Win32 game engine, with the engine's drawing, input, and game loop functions exposed to Lua through Sol2 bindings.</p>
-          <div class="chips"><span class="chip mono">Lua</span></div>
-          <div class="mini-links"><a class="btn" href="https://github.com/ivappetrova/LuaSnake" target="_blank" rel="noopener">Source</a></div>
-        </div>
-      </div>
-      <div class="mini reveal">
-        <div class="mini-thumb"><img src="Images/Raytracer.png" alt="Raytracer screenshot" loading="lazy" onerror="this.remove()"></div>
-        <div class="mini-body">
-          <h4>Raytracer</h4>
-          <p>A CPU raytracer built for my graphics programming course. It renders spheres, planes and triangle meshes with shadows, point and directional lights, and physically based Cook-Torrance materials, with a free-fly camera.</p>
-          <div class="chips"><span class="chip mono">C++</span><span class="chip mono">SDL</span></div>
-          <div class="mini-links"><a class="btn" href="https://github.com/ivappetrova/Raytracer" target="_blank" rel="noopener">Source</a></div>
-        </div>
-      </div>
-      <div class="mini reveal">
-        <div class="mini-thumb"><img src="Images/DualRasterizer.png" alt="Dual Rasterizer screenshot" loading="lazy" onerror="this.remove()"></div>
-        <div class="mini-body">
-          <h4>Dual Rasterizer</h4>
-          <p>One renderer that draws the same scene with either my software rasterizer or DirectX 11, switchable live. Features normal mapping, Lambert and Phong shading, and an alpha-blended fire effect.</p>
-          <div class="chips"><span class="chip mono">C++</span><span class="chip mono">DirectX 11</span><span class="chip mono">HLSL</span></div>
-          <div class="mini-links"><a class="btn" href="https://github.com/ivappetrova/DualRasterizer" target="_blank" rel="noopener">Source</a></div>
-        </div>
-      </div>
-      </div>
-    </div>
-  </div>
+  <aside class="info" aria-live="polite">
+    <div class="disc" id="disc"></div>
+    <h3 id="ttl"></h3>
+    <span class="eng" id="eng"></span>
+    <p id="dsc"></p>
+    <div class="chips" id="chp"></div>
+    <div class="lk" id="lks"></div>
+  </aside>
 </section>
 
-<dialog id="modal" aria-labelledby="m-title">
-  <button class="close" id="close" aria-label="Close project details">&times;</button>
-  <img class="m-img" id="m-img" alt="">
-  <div class="m-body">
-    <span class="engine-tag mono" id="m-engine"></span>
-    <h3 id="m-title"></h3>
-    <p id="m-desc"></p>
-    <div class="chips" id="m-chips"></div>
-    <div class="m-links" id="m-links"></div>
-  </div>
-</dialog>
 
-<section class="section now-section" id="now">
-  <div class="wrap">
-    <div class="section-head reveal"><h2>Currently working on</h2></div>
-    <div class="now-grid">
-      <div class="now-card reveal"><span class="mono">Unity</span><p>Team project</p><span class="client-tag mono">Client project</span></div>
-      <div class="now-card reveal" style="--d:100ms"><span class="mono">Unreal Engine 5</span><p>Original game concept</p></div>
-    </div>
-  </div>
-</section>
 
-<section class="section" id="about">
-  <div class="wrap">
-    <div class="section-head reveal"><h2>About</h2></div>
-    <div class="about-intro">
-      <div class="pic-wrap reveal">
-        <div class="pic-tilt" id="tilt">
-          <img class="hero-pic" src="Images/profPic.jpg" alt="Portrait of Iva Petrova">
-        </div>
-      </div>
-      <div class="about-text reveal" style="--d:100ms">
-        <p>I’ve always been drawn to games, from streaming the ones I love to bringing their characters to life through cosplay. Eventually, that curiosity shifted from wanting to experience games to wanting to understand how they’re made, and especially how the characters inside them come alive.</p>
-        <p>That led me to Howest DAE, where I’m specializing in Game Development and turning that passion into a career. I’m particularly interested in gameplay AI programming, while also exploring engine development and the systems that make games work behind the scenes.</p>
-        <p>Outside of game development, I enjoy watching anime and traveling. I’ve had the opportunity to visit countries including Ireland, Italy, Malta, and more.</p>
-        <p>I speak Bulgarian (native) and English (fluent, C1).</p>
-      </div>
+<section class="sec" id="more"><div class="wrap">
+  <h2>More projects</h2>
+  <p class="sub">Smaller projects and engine work, each with its own details.</p>
+  <div class="rows" id="m"></div>
+</div></section>
+
+<section class="sec" id="now"><div class="wrap">
+  <h2>In progress</h2>
+  <div class="prog">
+    <div><small>Unity</small><b>Bridge 13</b><u>Client project</u><p>A pirate-themed game that teaches children aged 13 and up how to play bridge, made for the European Bridge League.</p><div class="det" style="margin-top:16px"><h4>My work</h4><ul><li>The core game loop: the player and enemy hands, and the enemy AI.</li><li>A state machine for the match, with deal, turn and resolve states.</li><li>A game manager that loads all the data and then runs the state machine.</li></ul></div></div>
+    <div><small>Unreal Engine 5</small><b>Original game concept</b><p>The story is still taking shape, with Bulgarian mythology as its inspiration.</p></div>
+  </div>
+</div></section>
+
+<section class="sec" id="about"><div class="wrap">
+  <h2>About</h2>
+  <div class="ab" style="margin-top:32px">
+    <div class="card">
+      <img src="Images/profPic.jpg" alt="Portrait of Iva Petrova">
+      <div class="st"><span>Role</span><b>Gameplay Programmer</b></div>
+      <div class="st"><span>School</span><b>Howest DAE</b></div>
+      <div class="st"><span>Languages</span><b>Bulgarian (native)<br>English (C1)</b></div>
+      <div class="st"><span>Status</span><b>Open for Q1 2027</b></div>
     </div>
-    <div class="skills-row">
-      <div class="skills reveal">
-        <h3 class="skills-title">Technical profile</h3>
-        <div class="skills-grid">
-          <div class="skill-group">
-            <h4>Specialization</h4>
-            <div class="tags"><span class="tag">Gameplay Systems</span><span class="tag">Game AI</span></div>
-          </div>
-          <div class="skill-group">
-            <h4>Engines</h4>
-            <div class="tags"><span class="tag">Unity</span><span class="tag">Unreal Engine 5</span></div>
-          </div>
-          <div class="skill-group">
-            <h4>Core languages</h4>
-            <div class="tags"><span class="tag">C++</span><span class="tag">C#</span></div>
-          </div>
-          <div class="skill-group">
-            <h4>Additional languages</h4>
-            <div class="tags"><span class="tag">Python</span><span class="tag">Lua</span><span class="tag">SQL</span></div>
-          </div>
-        </div>
+    <div class="bio">
+      <p>I’ve always been drawn to games, from streaming the ones I love to bringing their characters to life through cosplay. Eventually, that curiosity shifted from wanting to experience games to wanting to understand how they’re made, and especially how the characters inside them come alive.</p>
+      <p>That led me to Howest DAE, where I’m specializing in Game Development and turning that passion into a career. I’m particularly interested in gameplay programming: designing and implementing player abilities and enemy AI behaviour, while also exploring engine development and the systems that make games work behind the scenes.</p>
+      <p>Outside of game development, I enjoy watching anime and traveling. I’ve had the opportunity to visit countries including Ireland, Italy, Malta, and more.</p>
+      <div class="load">
+        <div><h4>Specialization</h4><div class="tags"><span class="hot">Player Abilities</span><span class="hot">Enemy AI &amp; Behaviour</span><span class="hot">Gameplay Systems</span></div></div>
+        <div><h4>Engines</h4><div class="tags"><span>Unity</span><span>Unreal Engine 5</span></div></div>
+        <div><h4>Core languages</h4><div class="tags"><span>C++</span><span>C#</span></div></div>
+        <div><h4>Additional languages</h4><div class="tags"><span>Python</span><span>Lua</span><span>SQL</span></div></div>
       </div>
     </div>
   </div>
-</section>
+</div></section>
 
-<section class="contact" id="contact">
-  <div class="wrap reveal">
-    <h2>Looking for an intern?</h2>
-    <p>Let's build your idea together!</p>
-    <div class="contact-links">
-      <a href="mailto:ivaxppetrova@gmail.com"><img class="contact-icon" src="Images/Gmail.png" alt="">ivaxppetrova@gmail.com</a>
-      <a href="https://github.com/ivappetrova"><img class="contact-icon" src="Images/GitHub.png" alt="">GitHub</a>
-      <a href="https://www.linkedin.com/in/ivappetrova/"><img class="contact-icon" src="Images/LinkedIn.png" alt="">LinkedIn</a>
-      <a href="https://ivaxppetrova.itch.io/"><img class="contact-icon" src="Images/Itch.png" alt="">itch.io</a>
-    </div>
+<section class="ct" id="contact"><div class="wrap">
+  <h2>Looking for an intern?</h2>
+  <p>Let’s build your idea together!</p>
+  <div class="cl">
+    <a href="mailto:ivaxppetrova@gmail.com"><img src="Images/Gmail.png" alt="">ivaxppetrova@gmail.com</a>
+    <a href="https://github.com/ivappetrova"><img src="Images/GitHub.png" alt="">GitHub</a>
+    <a href="https://www.linkedin.com/in/ivappetrova/"><img src="Images/LinkedIn.png" alt="">LinkedIn</a>
+    <a href="https://ivaxppetrova.itch.io/"><img src="Images/Itch.png" alt="">itch.io</a>
   </div>
-</section>
-
-<footer class="site-foot">
-  <div class="wrap">© <span id="yr"></span> Iva Petrova</div>
-</footer>
+</div></section>
+</main>
+<footer class="foot"><div class="wrap">© <span id="yr"></span> Iva Petrova</div></footer>
 
 <script>
 (function(){
-  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var $ = function(s,c){ return (c||document).querySelector(s); };
-  var $$ = function(s,c){ return Array.prototype.slice.call((c||document).querySelectorAll(s)); };
-  $('#yr').textContent = new Date().getFullYear();
+var $=function(s){return document.querySelector(s)},$$=function(s){return[].slice.call(document.querySelectorAll(s))};
+$('#yr').textContent=new Date().getFullYear();
 
-  /* scroll progress */
-  var bar = $('#progress');
-  function onScroll(){
-    var h = document.documentElement;
-    bar.style.width = (h.scrollTop / (h.scrollHeight - h.clientHeight || 1) * 100) + '%';
+/* Projects. r:1 = featured in the video reel (keys 1-5, in this order).
+   v (video): 'yt:VIDEO_ID' for YouTube, or a file path like 'Videos/Scarex.mp4'.
+   d = which specialty the project shows. */
+/* PROJECT TEMPLATE (same for every project):
+   d  = short description of the game / project
+   w  = my work: a list of short bullets, one per thing you built
+   pb = interesting problem solved: {t:'one-line problem', text:'problem, fix and result in your own words (blank line = new paragraph)', file:'optional filename', code:'optional snippet'}
+   Only the five reel projects have a problem section; the More projects cards show description + my work. */
+var PHW=['What you built or owned: a system, a feature, a tool.','One bullet per thing, in your own words.'];
+var PH={t:'Name the problem in one line',text:'Tell the story in one go: what went wrong and why it mattered, how you tracked down the cause, what you changed, and what got better.\n\nStart a new paragraph with a blank line if you want to break it up.',file:'',code:''};
+var P=[
+{r:1,t:'PieRats',e:'Unity',i:'PieRats.png',d:"A chaotic multiplayer brawler where seafaring rats harpoon-swing through a flooded city and throw pies to sink each other’s ships. The last rat afloat wins.",w:['Programmed the behaviour of all environmental hazards (shark chase, sea mine countdown and blast, crocodile pull and stun) and how each one interacts with the player.','Wrote the hazard spawner that places hazards safely and replaces each one as it triggers.','Built the in-game HUD.','Developed the backend for several menus and UI, including the audio settings sliders with mixer and saved volume.'],pb:{t:'Hazards spawning inside the environment',text:"The environmental hazards (sharks, sea mines and crocodiles) were spawning inside the level geometry, and a random position could just as easily land on top of a player or another hazard.\n\nI fixed it by treating every spawn as a candidate that has to pass a series of checks. The spawner caches the play area’s bounds once and shrinks them by a margin, so nothing spawns at the edge of the map. It then tries up to 50 random positions inside that zone and throws a candidate away if it fails any check: it is too close to a living player, too close to another active hazard, too close to the level geometry (measured with Collider.ClosestPoint against every collider under the map’s props parent, so a point inside a wall counts as zero distance), or too close to a respawn point. The first candidate that passes is used, and if none does the spawn is skipped with a warning instead of forcing a bad position.\n\nTwo details kept it stable: the spawn area collider is switched off after its bounds are cached so rats don’t get stuck in it, and positions that are NaN or infinite are ignored in the distance checks. Each hazard also reports when it has been triggered, and the spawner immediately replaces it, so the arena always holds the same number of hazards, all placed in open water.",file:'EnvSpawner.cs',code:`// reject candidates that sit inside or next to level geometry
+if (!tooClose && _obstacleColliders != null)
+{
+    foreach (Collider obstacle in _obstacleColliders)
+    {
+        if (obstacle == null) continue;
+        Vector3 closestPoint = obstacle.ClosestPoint(candidate);
+        if (Vector3.Distance(candidate, closestPoint) < _minSpawnDistance)
+        {
+            tooClose = true;
+            break;
+        }
+    }
+}`},c:['C#'],k:['Gameplay systems'],l:[['Itch.io page','https://franciszekrakowiecki.itch.io/pierats']],v:'Videos/PieRats.mp4'},
+{r:1,t:'Lorchester',e:'Unity',tag:'Being refactored',i:'Lorchester.png',d:"A 3D side-scrolling platformer prototype. Switch between two characters with different skills to solve puzzles, fight enemies and find each floor’s key.",w:['Solo project: I programmed all of the gameplay.','Two-character control: switching between the player and the flying companion, with control returning to the player automatically when the companion is hit.','Player: rigidbody movement, ground-checked jumping, and a mouse-aimed weapon.','Flying companion: a follow mode that trails behind the player using smoothed velocity, and a free-flying mode with sphere-cast wall collision resolved per axis.','Hazards: zone-triggered shooting obstacles with projectiles, and thorns that damage the shared health and respawn the player.','Puzzles and progression: keys, doors, buttons, destructible objects that drop keys, and a final door that loads the next scene.','Currently improving the code and architecture of the whole project.'],pb:{t:'The flying companion drifting upward on its own',text:"Sometimes, when I switched control to the flying companion, it started moving upward by itself with no input and kept going until it hit a wall, after which it behaved normally.\n\nThe companion has a non-kinematic Rigidbody with gravity switched off, and its movement behaviour overwrites the horizontal velocity every physics step but keeps the vertical one. While it follows the player its position is set every frame, which hides any stored velocity, but a physical push from a collider could leave it with an upward velocity that nothing ever removed. It shared a layer with parts of the player’s hierarchy (the visuals, shoulder and weapon socket), so those colliders could shove it. When control switched to flying, the stored velocity took over and the companion drifted upward until a wall stopped it.\n\nI moved the whole player hierarchy onto its own layer so it can no longer physically push the companion, and gave the companion’s movement scripts an explicit obstacle mask so they only react to level geometry.",file:'',code:''},c:['C#'],k:['Player abilities'],l:[['Source','https://github.com/ivappetrova/Lorchester']],v:'Videos/Lorchester.mp4'},
+{r:1,pb:null,t:'Scarex',e:'Unreal Engine',i:'Scarex.png',d:"A third-person horror survival game built in Unreal Engine 5.4. An experiment in the lab went wrong and you’re trapped inside: scavenge for gadgets to unlock the emergency exit while an enemy stalks you.",w:['Built entirely in Blueprints, with no C++.','The stalking enemy: an AI controller and enemy character.','Gadget collection and the emergency exit: interactable gadgets that unlock the escape door.','Fog zones that slow the player down.','A shared health component with damage and interaction interfaces.','The HUD and screens: the anxiety bar, gadget counter, instructions, and win and lose screens.'],c:['Blueprints'],k:['Enemy AI'],l:[['Source','https://github.com/ivappetrova/Scarex']],v:'Videos/Scarex.mp4'},
+{r:1,t:'The Shelter Prototype',e:'Unity',tag:'Side project',i:'TheShelterPrototype.png',d:"A PvP survival builder prototype. Crashed on an alien planet, you build a shelter from your escape pod to survive weather events and outlast the other players.",w:['Built the disaster system: a manager that spawns disasters on a random timer at free spawn points, with a chance of chaining another one right after one ends.','Wrote the disaster base class, which handles lifetime, the danger zone, and tracking which players enter and leave it.','Made two disasters: wind, which slows players and drops materials from the sky, and a tornado that wanders the map, lifts and pulls players, and damages players and building parts.','Used an interface so disasters can affect players without knowing anything about the player code.','Used Mirror Networking to make the prototype playable as local multiplayer over the same Wi-Fi.'],pb:{t:'Applying player physics on the server instead of the local player',text:"Disaster effects such as the wind slowdown and the tornado’s lift and pull act on the player’s physics. I first applied them on the local player (isLocalPlayer), which seemed natural because that is the player being moved.\n\nI later switched to applying them on the server (isServer), and realised why that is the better choice. The disasters run on the server: it moves them, polls which players are inside their zone, and decides when an effect starts and stops. Applying the physics in the same place keeps one authoritative result, which Mirror then replicates to everyone. If each client applies the effect to its own local player, the outcome can differ from what the server and the other players see, so the effect ends up depending on each machine instead of the shared game state.",file:'',code:''},c:['C#','Unity','Mirror'],k:['Gameplay systems'],l:[['Source','https://github.com/ivappetrova/TheShelterPrototype']],v:'Videos/TheShelter.mp4'},
+{r:1,pb:null,t:"Ghosts ’n Goblins",e:"Howest DAE's Engine",i:'GhostsNGoblins.png',d:"A C++ recreation of Capcom’s Ghosts ’n Goblins, built with SDL and a custom game engine.",w:['Player: movement, jumping, crouching, ladder climbing and shooting, with a weapon and projectile system.','Five enemy types and a Unicorn boss (Zombie, Plant Shooter, Bird, Shield Bearer, Devil), built on an Enemy base class.','Projectiles built with object composition: the player, plant, devil and boss each create them, and every projectile handles its own update and collisions.','Collectables (coins, money bags, balls and the level key) with a randomised enemy drop system.','Moving platforms, camera movement, deadly water, and a HUD with score and timer.'],c:['C++'],k:['Player abilities'],l:[['Source','https://github.com/ivappetrova/GhostsNGoblins']],v:'Videos/GhostsNGoblins.mp4'},
+{t:'BubbleEngine',e:'Custom Engine',i:'BubbleEngine.png',d:"A 2D game engine in C++ and a recreation of the first 3 levels of Bubble Bobble, with singleplayer, co-op and PvP modes.",w:['Implemented the first 3 levels and all three modes: singleplayer, co-op and PvP.','Game loop with a fixed timestep for physics and variable rendering.','Component-based game objects for physics, health, bubble projectiles, pickups and level collision against polygons loaded from SVG.','A player state machine with idle, move, jump, fall, shoot and damage states.','Input commands bound to keyboard and gamepad, and observers that drive the HUD, score and sounds.','Audio on its own thread through an event queue, plus a service locator and a logging decorator.','Data-driven enemy types loaded from JSON, so a new enemy is a data change instead of a new class.'],c:['C++','OpenGL'],k:['Gameplay systems'],l:[['Source','https://github.com/ivappetrova/BubbleEngine']]},
+{t:'Zombie Game',e:'Unreal Engine',i:'ZombieGame.png',d:"An AI-controlled character that tries to survive as long as possible against zombies.",w:['Built the agent’s brain as a priority list checked every tick: escape the purge zone, heal, eat, loot, flee, fight and explore.','Armed combat that kites heavy zombies while shooting and rushes the rest, using face steering and line-trace shots.','Unarmed fleeing with blended steering: each nearby zombie adds a flee vector weighted by its tier and distance, with predicted movement.','Inventory handling that scores perceived items by urgency, blacklists unreachable ones, and never wastes a medkit or food.','Exploration that visits unvisited houses closest first and breaks free when stuck on geometry.','Best survival time: 1:58.'],c:['C++','Unreal Engine','Behavior Trees'],k:['Enemy AI'],l:[['Source','https://github.com/ivappetrova/ZombieGame']]},
+{t:'Lua Snake',e:'Lua',i:'LuaSnake.png',d:"A 2D snake game written entirely in Lua, running on a C++ engine through Sol2 bindings.",w:['Wrote all of the game logic in Lua: grid movement, growth and score, collisions and restart.','Exposed the engine’s drawing, input and game loop functions to Lua through Sol2 bindings, documented with EmmyLua annotations.'],c:['Lua','C++','Sol2'],l:[['Source','https://github.com/ivappetrova/LuaSnake']]},
+{t:'Reflecting Pheasant',e:'Graphics',i:'ReflectingPheasant.png',d:"A real-time Vulkan raytraced scene where all movement and mirroring is done with Projective Geometric Algebra instead of matrices.",w:['Built the gameplay and geometric algebra on top of the provided FlyTracer engine and FlyFish math library.','Player movement with translation motors.','A spinning mini sphere updated with bivector rotation motors, and a pheasant that orbits by composing a rotation motor every frame.','The pheasant’s reflection, done with the sandwich product and turned back into a translation motor for rendering.'],c:['C++','Vulkan','GLSL'],l:[['Source','https://github.com/ivappetrova/ReflectingPheasant']]},
+{t:'Raytracer',e:'Graphics',i:'Raytracer.png',d:"A CPU raytracer in C++ that renders spheres, planes and triangle meshes with shadows and physically based materials.",w:['Wrote the whole raytracer: rays, perspective camera, primitives and OBJ mesh loading.','Point and directional lights with toggleable hard shadows.','Lambert, Phong and Cook-Torrance PBR materials, using Fresnel-Schlick, GGX and Smith.','A free-fly camera, lighting debug views (observed area, radiance, BRDF only, combined) and two scenes: a room of metal and dielectric spheres, and a rotating bunny.'],c:['C++','SDL'],l:[['Source','https://github.com/ivappetrova/Raytracer']]},
+{t:'Dual Rasterizer',e:'Graphics',i:'DualRasterizer.png',d:"One renderer that draws the same scene with either a software rasterizer or DirectX 11, switchable live.",w:['A full software pipeline on the CPU: transforms, perspective divide, frustum culling, bounding-box rasterization, perspective-correct interpolation and a depth buffer.','Shading modes (combined, observed area, diffuse, specular), normal mapping, culling modes, and depth and bounding-box visualizations.','A DirectX 11 renderer with HLSL effects, point, linear and anisotropic sampling, and an alpha-blended fire effect.','Merged both renderers into one application you can switch between at runtime.'],c:['C++','DirectX 11','HLSL'],l:[['Source','https://github.com/ivappetrova/DualRasterizer']]}
+];
+P.forEach(function(p){p.w=p.w||PHW;if(p.r&&p.pb===undefined)p.pb=PH});
+var R=P.filter(function(p){return p.r}),screen=$('#screen'),slots=$('#slots'),cur=-1,btns=[];
+function img(src,alt){var m=document.createElement('img');m.src=src;m.alt=alt||'';m.onerror=function(){this.remove()};return m}
+function chips(a){return a.map(function(x){return'<span class="chip">'+x+'</span>'}).join('')}
+
+var LOCAL=location.protocol==='file:';
+function isYT(p){return(p.v||'').indexOf('yt:')===0}
+function poster(p,missing){
+  screen.innerHTML='';screen.appendChild(img('Images/'+p.i,p.t+' screenshot'));
+  if(!p.v)return;var b=document.createElement('button');b.className='play';b.setAttribute('aria-label','Play '+p.t+' gameplay video');
+  b.innerHTML='<b><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 4l14 8-14 8z"/></svg></b><span>'+(LOCAL&&isYT(p)?'Watch on YouTube':'Watch gameplay')+'</span>';
+  b.onclick=function(){play(p)};screen.appendChild(b);
+  if(missing){var m=document.createElement('p');m.className='miss';m.textContent='This video isn’t uploaded yet. Add it at '+p.v+'.';screen.appendChild(m)}
+}
+function play(p){
+  var v=p.v;
+  /* YouTube refuses to embed in pages opened straight from disk (error 153), so open it in a tab there. It embeds normally once the site is hosted. */
+  if(LOCAL&&isYT(p)){window.open('https://www.youtube.com/watch?v='+v.slice(3),'_blank','noopener');return}
+  screen.innerHTML='';
+  if(v.indexOf('yt:')===0){
+    var f=document.createElement('iframe');f.src='https://www.youtube-nocookie.com/embed/'+v.slice(3)+'?autoplay=1&rel=0';
+    f.referrerPolicy='strict-origin-when-cross-origin';f.allow='autoplay; encrypted-media; picture-in-picture; fullscreen';f.allowFullscreen=true;f.title=p.t+' gameplay video';screen.appendChild(f);
+  }else{
+    var m=document.createElement('video');m.src=v;m.controls=true;m.autoplay=true;m.playsInline=true;m.poster='Images/'+p.i;
+    m.addEventListener('error',function(){poster(p,true)});screen.appendChild(m);
   }
-  addEventListener('scroll', onScroll, {passive:true}); onScroll();
+}
+function esc(t){return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function detail(p){
+  var b=p.pb,code=b&&b.code?'<div class="dl-code"><span>'+esc(b.file||'')+'</span><pre><code>'+esc(b.code)+'</code></pre></div>':'';
+  return '<div class="det"><div class="dsec"><h4>My work</h4><ul>'+p.w.map(function(x){return'<li>'+esc(x)+'</li>'}).join('')+'</ul></div>'
+   +(b?'<div class="dsec"><h4>Interesting problem solved</h4><div class="pt">'+esc(b.t)+'</div>'+b.text.split('\n\n').map(function(t){return'<p>'+esc(t)+'</p>'}).join('')+code+'</div>':'')+'</div>';
+}
+function devlog(p){$('#detail').innerHTML='<div class="dl-name">'+esc(p.t)+'</div>'+detail(p)}
+function show(n){
+  if(n===cur)return;cur=n;var p=R[n];devlog(p);
+  btns.forEach(function(b,i){b.setAttribute('aria-pressed',i===n)});
+  poster(p);
+  $('#disc').innerHTML=(p.k||[]).map(function(x){return'<span>'+x+'</span>'}).join('');
+  $('#ttl').textContent=p.t;
+  $('#eng').innerHTML=p.e+(p.tag?'<span class="tag">'+p.tag+'</span>':'');
+  $('#dsc').textContent=p.d;$('#chp').innerHTML=chips(p.c);
+  $('#lks').innerHTML=p.l.map(function(l,j){return'<a class="btn'+(j?' g':'')+'" href="'+l[1]+'" target="_blank" rel="noopener">'+l[0]+'</a>'}).join('')
+    +((p.v||'').indexOf('yt:')===0?'<a class="btn g" href="https://www.youtube.com/watch?v='+p.v.slice(3)+'" target="_blank" rel="noopener">YouTube</a>':'');
+}
+R.forEach(function(p,n){
+  var b=document.createElement('button');b.type='button';b.className='slot';b.setAttribute('aria-pressed','false');
+  b.innerHTML='<kbd>'+(n+1)+'</kbd><b>'+p.t+'</b>';
+  b.insertBefore(img('Images/'+p.i),b.firstChild);
+  b.onclick=function(){show(n)};btns.push(b);slots.appendChild(b);
+});
+show(0);
+document.addEventListener('keydown',function(e){
+  if(e.ctrlKey||e.metaKey||e.altKey)return;var n=parseInt(e.key,10)-1;
+  if(n>=0&&n<5)show(n);
+});
+P.filter(function(p){return!p.r}).forEach(function(p){
+  var d=document.createElement('article');d.className='row';
+  d.innerHTML='<div></div><div><h4>'+p.t+'</h4><small>'+p.e+'</small><p>'+p.d+'</p><div class="chips">'+chips(p.c)+'</div>'+detail(p)+'<div style="margin-top:14px"><a href="'+p.l[0][1]+'" target="_blank" rel="noopener">'+p.l[0][0]+'</a></div></div>';
+  d.firstChild.appendChild(img('Images/'+p.i,p.t+' screenshot'));
+  $('#m').appendChild(d);
+});
 
-  /* reveal on scroll */
-  var io = new IntersectionObserver(function(es){
-    es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
-  }, {threshold:.12});
-  $$('.reveal').forEach(function(el){ io.observe(el); });
-
-  /* active nav link + sliding indicator */
-  var links = $$('.nav-links a'), ind = $('#nav-ind'), navLinks = $('.nav-links');
-  function activeLink(){ return links.filter(function(a){ return a.classList.contains('active'); })[0]; }
-  function moveInd(a){
-    if(!a){ ind.style.opacity = 0; return; }
-    ind.style.width = a.offsetWidth + 'px';
-    ind.style.transform = 'translateX(' + a.offsetLeft + 'px)';
-    ind.style.opacity = 1;
-  }
-  links.forEach(function(a){ a.addEventListener('mouseenter', function(){ moveInd(a); }); a.addEventListener('focus', function(){ moveInd(a); }); });
-  navLinks.addEventListener('mouseleave', function(){ moveInd(activeLink()); });
-  addEventListener('resize', function(){ moveInd(activeLink()); });
-  addEventListener('load', function(){ moveInd(activeLink()); });
-  var spy = new IntersectionObserver(function(es){
-    es.forEach(function(e){
-      if(e.isIntersecting){
-        links.forEach(function(a){ a.classList.toggle('active', a.getAttribute('href') === '#' + e.target.id); });
-        moveInd(activeLink());
-      }
-    });
-  }, {rootMargin:'-45% 0px -50% 0px'});
-  ['top','work','about','contact'].forEach(function(id){ spy.observe(document.getElementById(id)); });
-
-  /* hero cursor glow + photo tilt */
-  var hero = $('.hero'), tilt = $('#tilt'), pw = $('.pic-wrap');
-  if(!reduce){
-    hero.addEventListener('mousemove', function(e){
-      var r = hero.getBoundingClientRect();
-      hero.style.setProperty('--mx', (e.clientX - r.left) + 'px');
-      hero.style.setProperty('--my', (e.clientY - r.top) + 'px');
-    });
-    pw.addEventListener('mousemove', function(e){
-      var r = pw.getBoundingClientRect();
-      var dx = (e.clientX - r.left) / r.width - .5, dy = (e.clientY - r.top) / r.height - .5;
-      tilt.style.transform = 'rotateY(' + (dx*14) + 'deg) rotateX(' + (-dy*14) + 'deg)';
-    });
-    pw.addEventListener('mouseleave', function(){ tilt.style.transform = ''; });
-  }
-
-  /* rotating role */
-  var roles = ['gameplay programmer','gameplay systems','game AI'], ri = 0, ci = roles[0].length, del = true;
-  var roleEl = $('#role');
-  function type(){
-    var w = roles[ri];
-    if(del){ ci--; if(ci <= 0){ del = false; ri = (ri+1) % roles.length; } }
-    else { ci++; if(ci >= roles[ri].length){ del = true; roleEl.textContent = roles[ri]; return setTimeout(type, 2400); } }
-    roleEl.textContent = roles[ri].slice(0, Math.max(ci,0));
-    setTimeout(type, del ? 40 : 75);
-  }
-  if(!reduce) setTimeout(type, 3200);
-
-  /* project card spotlight */
-  var cards = $$('.project');
-  cards.forEach(function(c){
-    c.addEventListener('mousemove', function(e){
-      var r = c.getBoundingClientRect();
-      c.style.setProperty('--px', (e.clientX - r.left) + 'px');
-      c.style.setProperty('--py', (e.clientY - r.top) + 'px');
-    });
-  });
-
-  /* project modal */
-  var dlg = $('#modal'), lastFocus;
-  function open(card){
-    lastFocus = card;
-    var img = $('img', card);
-    $('#m-img').src = img.src; $('#m-img').alt = img.alt;
-    $('#m-engine').textContent = $('.engine-tag', card).textContent;
-    $('#m-title').textContent = $('h3', card).textContent;
-    $('#m-desc').textContent = $('p', card).textContent;
-    $('#m-chips').innerHTML = $('.chips', card).innerHTML;
-    var ml = $('#m-links'); ml.innerHTML = '';
-    $$('.project-links a', card).forEach(function(a, i){
-      var n = document.createElement('a');
-      n.href = a.href; n.textContent = a.textContent; n.target = '_blank'; n.rel = 'noopener';
-      n.className = i === 0 ? 'btn' : 'btn ghost';
-      ml.appendChild(n);
-    });
-    dlg.showModal();
-  }
-  cards.forEach(function(c){ c.addEventListener('click', function(){ open(c); }); });
-  $('#close').addEventListener('click', function(){ dlg.close(); });
-  dlg.addEventListener('click', function(e){ if(e.target === dlg) dlg.close(); });
-  dlg.addEventListener('close', function(){ if(lastFocus) lastFocus.focus(); });
-
+var links=$$('.nav a'),spy=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)links.forEach(function(a){a.classList.toggle('on',a.getAttribute('href')==='#'+(e.target.id==='now'||e.target.id==='more'?'reel':e.target.id))})})},{rootMargin:'-45% 0px -50% 0px'});
+['reel','more','now','about','contact'].forEach(function(id){spy.observe(document.getElementById(id))});
 })();
 </script>
 </body>
